@@ -70,6 +70,12 @@ same turn and let the person type the one they want (the tool's free-text option
    - **App (iOS)** → **Figma** (same as above) or **SwiftUI code** (ask whether it should be a
      standalone file or land in an existing iOS repo/path — see Step 5 for what this can and can't
      do; "Simulator" itself is never an option here, since this skill can't open or produce it).
+     **Also ask which device size to design for** (e.g. iPhone 17, iPhone SE, iPad, or custom
+     dimensions) — iOS-only, and last, since it's really a detail of *this* output rather than a
+     new top-level question: it sets the Figma frame width/height or the SwiftUI `#Preview`'s
+     `.previewDevice(...)`, and guessing wrong means redoing layout math after the fact. Default to
+     a current standard size (iPhone 17, ~393×852) if the person has no preference, rather than
+     blocking on an answer to something this replaceable.
 
 If someone explicitly insists on a cross-platform combination anyway (e.g. genuinely wants a web
 flow reimagined for iOS, on purpose) — honor it, since forcing platform-appropriate options is about
@@ -129,10 +135,22 @@ Either way:
   spacing (from `typography:` or from the Hierarchy table's matching row). Match the *closest*
   documented token/row to the role you're building — state which one you picked and why if it's
   not obvious.
-- **Font substitution**: if the file names a licensed/unavailable font, check its "Note on Font
-  Substitutes" section (or, in prose files, the "Google Fonts substitute" bullet under Typography
-  Rules) for the documented fallback and apply it *exactly*, including any letter-spacing or
-  line-height adjustment it specifies. Never pick a substitute font freehand.
+- **Font substitution**: this has two distinct cases — don't conflate them.
+  - **The font is proprietary/licensed** (most brand display faces): check the file's "Note on Font
+    Substitutes" section (or, in prose files, the "Google Fonts substitute" bullet under Typography
+    Rules) for the documented fallback and apply it *exactly*, including any letter-spacing or
+    line-height adjustment it specifies. Never pick a substitute font freehand — and **always say
+    in the handoff** which substitute was used in place of which real font and why, even when it's
+    the file's own documented choice. Don't let a silent substitution read as if it were the real
+    brand typeface.
+  - **The font is legitimately obtainable but just isn't loaded in this Figma file right now** (an
+    open font like Inter or a real system font like SF Pro Rounded that happens not to be in this
+    session's font list): check with `listAvailableFontsAsync` before assuming. If it's missing,
+    don't silently cascade to a different substitute — ask the person whether to (a) add that font
+    to Figma themselves (most open fonts install in seconds from the Fonts panel or Google Fonts)
+    and retry, or (b) have you pick the closest available substitute now. Only proceed once they've
+    chosen, since silently downgrading a font that was actually available to the person, just not
+    loaded yet, throws away accuracy they could have had for free.
 - **Spacing & radius**: pull gaps and padding from `spacing:`/`rounded:`, or from the Layout
   Principles / Shapes sections in prose files. If a needed gap isn't represented anywhere, pick the
   nearest documented one and say so — don't invent an arbitrary pixel value.
