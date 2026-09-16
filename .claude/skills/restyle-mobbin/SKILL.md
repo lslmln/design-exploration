@@ -1,6 +1,6 @@
 ---
 name: restyle-mobbin
-description: Search Mobbin for a UI pattern (a flow, screen, or section) and restyle it into a target design system's real tokens — the user's own or a named brand's — reading exact values from a getdesign.md-style file in design-tokens/, then writing the result directly into Figma (or an HTML preview if Figma isn't connected). Use whenever a designer wants inspiration from real products adapted into a specific design language, e.g. "find onboarding flows and restyle them in our system" or "pull Stripe's checkout and restyle in Airbnb's style."
+description: Search Mobbin for a UI pattern (a flow, screen, or section) — by default across several different source brands doing the same pattern, for side-by-side comparison — and restyle all of it into a target design system's real tokens (the user's own, a named web brand, or a native iOS app), reading exact values from a design-tokens/ reference file, then writing the result directly into Figma (or a platform-matched code file — HTML or SwiftUI — if Figma isn't connected). Use whenever a designer wants inspiration from real products adapted into a specific design language, e.g. "find onboarding flows and restyle them in our system" or "pull how a few different apps do checkout and restyle them all in Airbnb's style."
 ---
 
 # Restyle Mobbin → design tokens → Figma
@@ -34,10 +34,17 @@ same turn and let the person type the one they want (the tool's free-text option
    format, is how a mismatch like "restyle this web flow as SwiftUI" happens — a real gap-flag case
    discovered in testing, not a hypothetical one. Locking platform in first prevents it structurally
    instead of relying on a warning after the fact.
-2. **What to search for** (if not already given). Once platform is known, offer only the pattern
-   types that platform actually supports as clickable options (web: a named app's screen, a whole
-   flow, a page section/component; app: a named app's screen, or a whole flow — no section option),
-   plus room to type something else. This doubles as Step 3's granularity signal.
+2. **What pattern to search for** (if not already given). Lead with established, common pattern
+   categories as clickable options — a whole flow (checkout, onboarding, sign-up, adding to cart —
+   these match the action tags Mobbin's own results already carry, like "Purchasing & Ordering" or
+   "Adding to Cart & Bag"), a single screen type (empty states, notification settings), or, web
+   only, a page section (pricing table). Whichever granularity, the sweet spot is pulling how
+   *several different brands* solve the same pattern and restyling all of them into one target so
+   they can be compared side by side — that's the default to lead with, not an opt-in. A single
+   named app's one specific screen (e.g. "Stripe's checkout screen") is still supported via free
+   text, but it's the narrower case: fetching one specific screen just to reskin it is a smaller ask
+   than the multi-brand comparison this tool is actually built for, so don't present it as the
+   default option. This choice doubles as Step 3's granularity signal.
 3. **What to restyle it into** (if not already given). There are two separate pools, and which one
    to search depends on the platform from question 1:
    - **Web** → `design-tokens/*.md` (flat files, one per brand, website-derived).
@@ -145,9 +152,14 @@ Match search granularity to the ask:
   `search_screens` with a tight query (mobile) — sections tend to match "designing one feature"
   better than a full flow.
 
-If the request implies curation ("the best few", "a couple of good ones") and Mobbin returns more
-than needed, pick a small, genuinely varied set (different source apps, not near-duplicates) and
-say what was excluded and why — don't silently drop results without explanation.
+**Default to a multi-brand set, not a single result.** Unless the request names one specific app
+(e.g. "Stripe's checkout screen"), the point of this skill is comparing how several different
+brands solve the same pattern and restyling all of them into one target — that comparison is the
+default behavior, not something that only happens when the person explicitly asks for "a few" or
+"the best ones." When Mobbin returns results from multiple source apps, pick a small, genuinely
+varied set (different source apps, not near-duplicates of the same app) and restyle each one — say
+what was excluded and why if you narrowed a larger result set down. Only restyle a single source
+when the request named one specific app, or when Mobbin genuinely only returned one usable match.
 
 ## Step 4 — Match content to the target's real component vocabulary
 
