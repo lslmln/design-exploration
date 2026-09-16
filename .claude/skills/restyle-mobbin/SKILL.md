@@ -13,11 +13,12 @@ not a finished screen. Say so when handing off results.
 
 ## Step 0 — Gather the request interactively, if it isn't already complete
 
-Three things are always needed before anything else can happen, gathered in this order: **what to
-search for**, **what to restyle it into**, and **what format the output should take**. If the
-user's message already names all three clearly (e.g. "pull Stripe's checkout, restyle in Airbnb's
-style, and write it to Figma"), skip straight to Step 1 — don't interrupt someone who already gave
-you everything. Ask about only whatever's actually missing; don't re-ask something already answered.
+Four things are always needed before anything else can happen, gathered in this order:
+**platform**, **what to search for**, **what to restyle it into**, and **what format the output
+should take**. If the user's message already names all four clearly (e.g. "pull Stripe's web
+checkout, restyle in Airbnb's style, and write it to Figma"), skip straight to Step 1 — don't
+interrupt someone who already gave you everything. Ask about only whatever's actually missing;
+don't re-ask something already answered.
 
 Ask what's missing before searching, using `AskUserQuestion` rather than one open-ended "what do
 you want?" prompt — but be honest about that tool's shape: it supports at most 4 clickable options
@@ -25,24 +26,45 @@ per question, so it cannot present a full list as chips once there are more than
 Don't fake a dropdown that doesn't fit; when a list is long, say the full list in plain text in the
 same turn and let the person type the one they want (the tool's free-text option handles this).
 
-1. **What to search for** (if not already given). A few concrete example patterns as clickable
-   options (a named app's screen, a whole flow, a page section/component), plus room to type
-   something else — this doubles as Step 3's granularity signal, so getting it here avoids a second
-   round-trip later.
-2. **What to restyle it into** (if not already given). List every file actually in
+1. **Platform: web or app (iOS)** (if not already given). Ask this *first*, before anything else —
+   it determines which Mobbin tools are even valid (web unlocks `search_flows`, `search_screens`,
+   and `search_sections`; app only unlocks `search_flows`/`search_screens` with `platform: "ios"` —
+   there's no app equivalent of a page "section") and which output formats make sense (see question
+   4). Deciding this last, after already searching or after the person has committed to an output
+   format, is how a mismatch like "restyle this web flow as SwiftUI" happens — a real gap-flag case
+   discovered in testing, not a hypothetical one. Locking platform in first prevents it structurally
+   instead of relying on a warning after the fact.
+2. **What to search for** (if not already given). Once platform is known, offer only the pattern
+   types that platform actually supports as clickable options (web: a named app's screen, a whole
+   flow, a page section/component; app: a named app's screen, or a whole flow — no section option),
+   plus room to type something else. This doubles as Step 3's granularity signal.
+3. **What to restyle it into** (if not already given). List every file actually in
    `design-tokens/*.md` — as plain text if there are more than ~3, since the chip limit won't fit
    them — plus an option for "my own system" (routes into Step 1's no-matching-file handling). Don't
    hardcode brand names in this skill file itself; the reference set grows, so read the directory
-   fresh each time rather than trusting a list written down here.
-3. **What format the output should be** (if not already given, and once Step 3's platform is known
-   or knowable from the pattern chosen in question 1). Options: **Figma** (a design canvas — the
-   default, ask for the target file's URL if none has been mentioned in this conversation), **HTML**
-   (a real file you can open immediately, best for web-sourced patterns), or **SwiftUI code** (best
-   for iOS-sourced patterns — ask whether it should be a standalone file or land in an existing iOS
-   repo/path, since "Simulator" itself isn't something this skill can produce or open — see Step 5).
+   fresh each time rather than trusting a list written down here. **Important caveat to surface when
+   platform is "app"**: every file currently in `design-tokens/` was built from that brand's
+   *website*, not its native iOS app — none document a real native app's actual UI, even for brands
+   that have one. Say so plainly rather than letting the person assume "Coinbase" as a target means
+   Coinbase's real app design language; it means Coinbase's website tokens applied to a mobile
+   screen, which is a reasonable starting point, not the same thing.
+4. **What format the output should be** (if not already given). Only offer formats that fit the
+   platform locked in at question 1 — don't present an option you'd immediately have to flag as a
+   mismatch:
+   - **Web** → **Figma** (the default; ask for the target file's URL if none has been mentioned in
+     this conversation) or **HTML** (a real file you can open immediately).
+   - **App (iOS)** → **Figma** (same as above) or **SwiftUI code** (ask whether it should be a
+     standalone file or land in an existing iOS repo/path — see Step 5 for what this can and can't
+     do; "Simulator" itself is never an option here, since this skill can't open or produce it).
+
+If someone explicitly insists on a cross-platform combination anyway (e.g. genuinely wants a web
+flow reimagined for iOS, on purpose) — honor it, since forcing platform-appropriate options is about
+avoiding an *accidental* mismatch, not blocking a deliberate one — but flag the reinterpretation
+explicitly in the handoff exactly like an unmatched component from Step 4: it's the same category
+of "improvised, not documented" call, just at the platform level instead of the component level.
 
 Combine what's missing into as few `AskUserQuestion` calls as possible — one call can carry multiple
-questions, so don't spread three questions across three round-trips when one call handles it.
+questions, so don't spread four questions across four round-trips when one or two calls handle it.
 
 The reasoning: Step 1 already refuses to silently substitute a stand-in design system when the
 user's own doesn't exist, a wrong guess at search granularity means a wasted Mobbin call, and a

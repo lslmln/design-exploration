@@ -20,9 +20,17 @@ reference design systems are bundled as restyle targets (see `design-tokens/`) �
 design-system file exists yet, so today every run either targets one of those 28 or a stand-in you
 name explicitly.
 
-Code output is matched to the *source* pattern's platform rather than one-size-fits-all: a
-web-sourced pattern (a flow, a web screen, or a section) falls back to HTML; a mobile-sourced
-pattern (an iOS screen from Mobbin) falls back to a SwiftUI view file instead.
+Both the search and the output are matched to a platform (web or app/iOS) chosen upfront, rather
+than discovered after the fact — code output falls back to HTML for a web-sourced pattern and
+SwiftUI for an iOS-sourced one, and the platform choice also controls which Mobbin tools and which
+output formats are even offered, so a mismatch (e.g. restyling a web checkout flow as SwiftUI)
+never happens by accident.
+
+**Known limitation**: all 28 reference files below were built from that brand's *website*, not its
+native iOS app — none of them document a real native app's actual UI, even for brands that ship
+one (Coinbase, Airbnb, Binance, Kraken, etc.). Picking one of these as a target for an iOS-sourced
+pattern means applying that brand's website tokens to a mobile screen — a reasonable starting
+point, not the same thing as that brand's actual app design language.
 
 **Genuinely out of scope**: actually opening Xcode Simulator to show you a live rendered result.
 This runs through Claude Code, which for this project runs in a cloud/remote Linux session with no
