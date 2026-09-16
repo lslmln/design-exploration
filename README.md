@@ -15,22 +15,16 @@ app, server, or API key to manage.
 ## Status
 
 Working end to end. Restyling writes real nodes directly into Figma via the Figma MCP server; if
-Figma isn't connected, it falls back to a self-contained HTML preview instead of blocking. 28
-reference design systems are bundled as restyle targets (see `design-tokens/`) — no personal
-design-system file exists yet, so today every run either targets one of those 28 or a stand-in you
-name explicitly.
+Figma isn't connected, it falls back to a self-contained HTML preview instead of blocking. No
+personal design-system file exists yet, so today every run either targets a bundled reference file
+or a stand-in you name explicitly.
 
 Both the search and the output are matched to a platform (web or app/iOS) chosen upfront, rather
 than discovered after the fact — code output falls back to HTML for a web-sourced pattern and
 SwiftUI for an iOS-sourced one, and the platform choice also controls which Mobbin tools and which
 output formats are even offered, so a mismatch (e.g. restyling a web checkout flow as SwiftUI)
-never happens by accident.
-
-**Known limitation**: all 28 reference files below were built from that brand's *website*, not its
-native iOS app — none of them document a real native app's actual UI, even for brands that ship
-one (Coinbase, Airbnb, Binance, Kraken, etc.). Picking one of these as a target for an iOS-sourced
-pattern means applying that brand's website tokens to a mobile screen — a reasonable starting
-point, not the same thing as that brand's actual app design language.
+never happens by accident. The platform choice also picks which reference pool to search: 28
+website design systems for web, or 200 native iOS app design systems for app (see Repo layout).
 
 **Genuinely out of scope**: actually opening Xcode Simulator to show you a live rendered result.
 This runs through Claude Code, which for this project runs in a cloud/remote Linux session with no
@@ -59,11 +53,19 @@ verified match.
 
 ## Repo layout
 
-- `design-tokens/` — 28 reference design-system token files used as restyle targets: Apple,
+- `design-tokens/` — 28 **website** design-system token files used as web restyle targets: Apple,
   Airbnb, Coinbase, Binance, Claude, Clay, Cursor, Discord, ElevenLabs, Framer, IBM, Kraken,
   Linear, Mastercard, Meta, Miro, MongoDB, Nike, Notion, Revolut, SpaceX, Stripe, Supabase, Tesla,
   Uber, Vercel, Wise, xAI. Each file uses the same `colors:`/`typography:`/`rounded:`/`spacing:`/
   `components:` schema so the skill can parse it rigorously instead of eyeballing values.
+- `design-tokens/ios-apps/` — 200 **native iOS app** design systems (not websites), organized by
+  category (finance, social, messaging, travel, music, fitness, productivity, dating, food, video,
+  misc) — e.g. `finance/coinbase/DESIGN.md` documents Coinbase's actual app, a genuinely different
+  document from `design-tokens/coinbase-DESIGN.md` (its website). Each app also ships a
+  `DESIGN-swiftui.md` sibling with ready `Color`/`Font` extensions and sample SwiftUI views. Sourced
+  from [Meliwat/awesome-ios-design-md](https://github.com/Meliwat/awesome-ios-design-md) (MIT —
+  see `ios-apps/ATTRIBUTION.md`); these are prose-format (no YAML front matter), which the skill
+  parses with the same rigor by reading the exact table row/bullet instead of a YAML key.
 - `previews/` — code fallback output for when Figma isn't connected, matched to the source
   pattern's platform. `dashboard-empty-state-airbnb.html` (web-sourced, rendered and verified with
   a headless browser) and `swiftui/CoinbaseNotificationSettingsView.swift` (iOS-sourced, hand-written

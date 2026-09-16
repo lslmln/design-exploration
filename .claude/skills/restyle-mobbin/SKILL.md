@@ -38,16 +38,23 @@ same turn and let the person type the one they want (the tool's free-text option
    types that platform actually supports as clickable options (web: a named app's screen, a whole
    flow, a page section/component; app: a named app's screen, or a whole flow — no section option),
    plus room to type something else. This doubles as Step 3's granularity signal.
-3. **What to restyle it into** (if not already given). List every file actually in
-   `design-tokens/*.md` — as plain text if there are more than ~3, since the chip limit won't fit
-   them — plus an option for "my own system" (routes into Step 1's no-matching-file handling). Don't
-   hardcode brand names in this skill file itself; the reference set grows, so read the directory
-   fresh each time rather than trusting a list written down here. **Important caveat to surface when
-   platform is "app"**: every file currently in `design-tokens/` was built from that brand's
-   *website*, not its native iOS app — none document a real native app's actual UI, even for brands
-   that have one. Say so plainly rather than letting the person assume "Coinbase" as a target means
-   Coinbase's real app design language; it means Coinbase's website tokens applied to a mobile
-   screen, which is a reasonable starting point, not the same thing.
+3. **What to restyle it into** (if not already given). There are two separate pools, and which one
+   to search depends on the platform from question 1:
+   - **Web** → `design-tokens/*.md` (flat files, one per brand, website-derived).
+   - **App (iOS)** → `design-tokens/ios-apps/<category>/<app>/DESIGN.md` — 200 native iOS app design
+     systems (Coinbase, Binance, Robinhood, Spotify, Airbnb, and 195 more, organized by category:
+     finance, social, messaging, travel, music, fitness, productivity, dating, food, video, misc).
+     These document the brand's *actual app*, not its website — check here first whenever platform
+     is "app" and only fall back to the website file (with the mismatch caveat below) if the brand
+     genuinely isn't in this set. `design-tokens/ios-apps/ATTRIBUTION.md` credits the source.
+   List real options as plain text if there are more than ~3, since the chip limit won't fit them —
+   plus an option for "my own system" (routes into Step 1's no-matching-file handling). Don't
+   hardcode brand names in this skill file itself; both reference sets grow, so read the directory
+   fresh each time rather than trusting a list written down here. **If platform is "app" and the
+   requested brand only exists in the website pool** (not in `design-tokens/ios-apps/`), say so
+   plainly before proceeding — that's still the mismatch case (website tokens applied to a mobile
+   screen, not the brand's real app language), just narrower now that a real native-app pool exists
+   for many brands.
 4. **What format the output should be** (if not already given). Only offer formats that fit the
    platform locked in at question 1 — don't present an option you'd immediately have to flag as a
    mismatch:
@@ -80,36 +87,53 @@ surfacing it to the person rather than leaving it silent in the repo (see Step 5
 ## Step 1 — Resolve the target design system
 
 The user names a target either as "our/my system" (their own) or a specific brand ("Coinbase's
-style", "Apple's style") — or, per Step 0, picks one from a presented list. Resolve it to one file
-in `design-tokens/*.md`.
+style", "Apple's style") — or, per Step 0, picks one from a presented list. Resolve it to one file:
+`design-tokens/<brand>-DESIGN.md` for web, or `design-tokens/ios-apps/<category>/<app>/DESIGN.md`
+for app — whichever pool matches the platform from Step 0.
 
-- If "our/my system" has no matching file in `design-tokens/`, say so explicitly before
-  proceeding — do not silently substitute a different brand's file as a stand-in. Ask which file
-  to use, or whether to treat this as a test run against an existing reference file.
+- If "our/my system" has no matching file in either pool, say so explicitly before proceeding — do
+  not silently substitute a different brand's file as a stand-in. Ask which file to use, or whether
+  to treat this as a test run against an existing reference file.
 - Multiple targets in one request (e.g. "show me it in both Coinbase's and Apple's style") means
   running Steps 3–5 once per target file, in parallel where the outputs don't depend on each other.
 
 ## Step 2 — Parse the target file rigorously, not by eye
 
 Read the whole file. Do not approximate — every value used downstream must trace back to a
-specific line in the file.
+specific line in the file. Target files come in two schemas; both demand the same rigor, just
+extracted from different places:
 
-- **Colors**: pull exact hex from `colors:`. Convert to Figma's 0–1 range by dividing by 255 —
-  never eyeball an RGB value.
-- **Typography**: for each text role used, pull the exact `fontSize`, `fontWeight`, `lineHeight`,
-  and `letterSpacing` from `typography:`. Match the *closest* documented token to the role you're
-  building (e.g. a card title maps to `title-lg` or `display-sm`, not just "something biggish") —
-  state which token you picked and why if it's not obvious.
-- **Font substitution**: if the file's `fontFamily` names a licensed/unavailable font, check the
-  "Note on Font Substitutes" section (or equivalent) for the documented fallback and apply it
-  *exactly*, including any letter-spacing or line-height adjustment it specifies. Never pick a
-  substitute font freehand.
-- **Spacing & radius**: pull gaps and padding from `spacing:` and corner radii from `rounded:`.
-  If a needed gap isn't represented by any token, pick the nearest one and say so — don't invent
-  an arbitrary pixel value.
-- **Components**: check `components:` for a named entry matching what you're building (e.g.
-  `pricing-tier-featured`, `button-primary`). Prefer reusing a documented component's full spec
-  over assembling primitives by hand.
+- **YAML-tokenized files** (every `design-tokens/*.md` web file, plus a few hand-converted ones):
+  values live in a `colors:`/`typography:`/`rounded:`/`spacing:`/`components:` front-matter block.
+  Pull from those keys directly.
+- **Prose-only files** (every `design-tokens/ios-apps/` file, copied as-is from their source repo):
+  no YAML block — values live in the prose and in markdown tables under numbered sections (Color
+  Palette & Roles, Typography Rules' Hierarchy table, Component Stylings). Pull from the specific
+  table row or bullet, the same way you'd pull from a YAML key — "the Hierarchy table's 'Portfolio
+  Hero' row says 40pt / weight 700 / -0.5pt tracking" is exactly as rigorous as reading a
+  `typography:` key, it's just prose instead of YAML. Never let the lack of YAML become an excuse
+  to eyeball a value that's actually written down explicitly a few lines away.
+
+Either way:
+
+- **Colors**: pull the exact hex (from `colors:` or from inline code spans like `` `#0052FF` `` in
+  prose). Convert to Figma's 0–1 range by dividing by 255 — never eyeball an RGB value.
+- **Typography**: for each text role used, pull the exact size, weight, line height, and letter
+  spacing (from `typography:` or from the Hierarchy table's matching row). Match the *closest*
+  documented token/row to the role you're building — state which one you picked and why if it's
+  not obvious.
+- **Font substitution**: if the file names a licensed/unavailable font, check its "Note on Font
+  Substitutes" section (or, in prose files, the "Google Fonts substitute" bullet under Typography
+  Rules) for the documented fallback and apply it *exactly*, including any letter-spacing or
+  line-height adjustment it specifies. Never pick a substitute font freehand.
+- **Spacing & radius**: pull gaps and padding from `spacing:`/`rounded:`, or from the Layout
+  Principles / Shapes sections in prose files. If a needed gap isn't represented anywhere, pick the
+  nearest documented one and say so — don't invent an arbitrary pixel value.
+- **Components**: check `components:` (or the Component Stylings section in prose files) for a
+  named entry matching what you're building. Prefer reusing a documented component's full spec over
+  assembling primitives by hand. For an app target with a matching `DESIGN-swiftui.md`, that file's
+  `Color`/`Font` extensions and sample views are the real, author-written implementation — read it
+  before improvising your own SwiftUI patterns in Step 5.
 
 ## Step 3 — Search Mobbin
 
@@ -174,7 +198,10 @@ or `search_screens(platform: "web")` or `search_sections` is web-sourced; `searc
   (per Step 0). See `previews/swiftui/CoinbaseNotificationSettingsView.swift` for the established
   format: a `Color` hex extension for exact token values, small reusable row/component views
   instead of one giant body, and a `#Preview` block at the bottom so it drops straight into Xcode's
-  preview canvas. **Important limitation**: a Claude Code sandbox has no Swift toolchain and no
+  preview canvas. If the target came from `design-tokens/ios-apps/`, its `DESIGN-swiftui.md`
+  sibling file already has that brand's own `Color`/`Font` extensions and sample view patterns
+  written out — match those conventions instead of inventing a parallel structure. **Important
+  limitation**: a Claude Code sandbox has no Swift toolchain and no
   macOS, so this file cannot be compiled, previewed, or verified from within the session — unlike
   the HTML path, this one ships unverified, and Simulator itself only ever runs on the person's own
   Mac. Say so explicitly in the handoff, send them the file directly, and tell them to open it in
