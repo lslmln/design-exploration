@@ -266,12 +266,11 @@ or `search_screens(platform: "web")` or `search_sections` is web-sourced; `searc
   preview canvas. If the target came from `design-tokens/ios-apps/`, its `DESIGN-swiftui.md`
   sibling file already has that brand's own `Color`/`Font` extensions and sample view patterns
   written out — match those conventions instead of inventing a parallel structure. **Important
-  limitation**: a Claude Code sandbox has no Swift toolchain and no
-  macOS, so this file cannot be compiled, previewed, or verified from within the session — unlike
-  the HTML path, this one ships unverified, and Simulator itself only ever runs on the person's own
-  Mac. Say so explicitly in the handoff, send them the file directly, and tell them to open it in
-  Xcode (or paste it into a Swift Playground) to confirm it actually compiles before trusting it.
-  When the target's typography needs a licensed/substitute font, default the SwiftUI code to
+  limitation**: a Claude Code sandbox has no Swift toolchain and no macOS, so this file cannot be
+  compiled, previewed, or verified from within the session — unlike the HTML path, this one ships
+  unverified. Say so explicitly in the handoff, send them the file directly, and tell them to open
+  it in Xcode (or paste it into a Swift Playground) to confirm it actually compiles before trusting
+  it. When the target's typography needs a licensed/substitute font, default the SwiftUI code to
   `.system(...)` for guaranteed compilability, and note in the handoff that bundling the real
   substitute font (adding the file to the Xcode target + `Info.plist`) is a manual step the person
   still needs to do for pixel-exact type. Where the target's token schema improvised a component
@@ -279,6 +278,17 @@ or `search_screens(platform: "web")` or `search_sections` is web-sourced; `searc
   native equivalent first (e.g. `Toggle`) — native platform components are often available in code
   even when they had to be hand-built from primitives in Figma, and using the real one is strictly
   better than re-improvising.
+
+  **Also produce a real HTML preview, rendered at the exact device width chosen in Step 0** (e.g.
+  393px for iPhone 17) — this is the only way anyone, including you, can actually *see* the result
+  before opening Xcode, since the SwiftUI file itself is unverified and Simulator only runs on the
+  person's own Mac. Same principle as the web case: **no illustrated phone bezel, no notch graphic
+  drawn in CSS** — just the real content at the real device width, unstretched. Mobbin's source
+  screens are already phone-shaped at that same scale, so this maps directly rather than needing an
+  invented frame. Render it with a headless browser to verify before handing it off, exactly like
+  the web HTML path. For a multi-brand comparison, use the same folder structure as the web case
+  (an `index.html` with live iframe thumbnails linking to one real phone-width page per source app)
+  — the architecture doesn't change, only the page width does.
 
 ## Handoff notes (always include)
 
