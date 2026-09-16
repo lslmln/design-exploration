@@ -46,15 +46,20 @@ same turn and let the person type the one they want (the tool's free-text option
    than the multi-brand comparison this tool is actually built for, so don't present it as the
    default option. This choice doubles as Step 3's granularity signal.
 
-   **Optionally, also offer to narrow by app category** (finance, shopping/retail, social,
-   messaging, travel, food, music, fitness, productivity, dating, video — the same taxonomy
-   `design-tokens/ios-apps/` already uses, for consistency) alongside "search broadly, no category
-   filter" as the default/first option. Be upfront about what this actually does: Mobbin's
-   `search_flows`/`search_screens`/`search_sections` tools have **no real category or industry
-   filter parameter** — only a free-text `query`, a `platform`, and pagination. A category choice
-   here gets folded into the natural-language query itself (e.g., "checkout flow for banking and
-   fintech apps") rather than applied as a structural filter, so it narrows results in practice but
-   isn't a guarantee. After searching, sanity-check that what came back is actually in the requested
+   **Optionally, also offer to narrow by app category**, using Mobbin's own real category taxonomy
+   (as browsable on mobbin.com itself, under Categories) — AI, Business, Collaboration,
+   Communication, CRM, Developer Tools, Education, Entertainment, Finance, Food & Drink, Graphics &
+   Design, Health & Fitness, Jobs & Recruitment, Lifestyle, Medical, Music & Audio, Maps &
+   Navigation, News, Photo & Video, Productivity, Real Estate, Reference, Shopping, Social
+   Networking, Sports, Travel & Transportation, Utilities — rather than an invented approximation,
+   alongside "search broadly, no category filter" as the default/first option. Be upfront about what
+   this actually does: this category list is real on Mobbin's own site, but the
+   `search_flows`/`search_screens`/`search_sections` MCP tools available here have **no category or
+   industry filter parameter** — only a free-text `query`, a `platform`, and pagination. A category
+   choice here gets folded into the natural-language query itself (e.g., "checkout flow for Finance
+   category apps" or naming a couple of representative apps from that category) rather than applied
+   as a structural filter, so it narrows results in practice but isn't a guarantee. After searching,
+   sanity-check that what came back is actually in the requested
    category — if Mobbin returns something clearly outside it, drop it from the varied set rather
    than forcing the count, and say so rather than silently including an off-category result.
 3. **What to restyle it into** (if not already given). There are two separate pools, and which one
