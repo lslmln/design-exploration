@@ -100,17 +100,42 @@ anything that matches this pattern?
 
 ## Step 5 — Output
 
+Figma is the default output whenever it's connected, regardless of the source pattern's platform —
+it's a canvas, not code, so it fits a mobile-sourced pattern just as well as a web-sourced one.
+
 - **Figma connected**: load the `figma-use` skill (mandatory prerequisite for `use_figma`) and
   build real nodes — auto-layout frames, text with the exact font/size/weight/letter-spacing from
   Step 2, fills bound to the exact hex, corner radii from `rounded:`. Work incrementally per the
   `figma-use` rules (small steps, screenshot to verify, return created node IDs). Position new
   top-level frames away from existing content on the page.
-- **Figma not connected**: fall back to a single self-contained HTML file (inline CSS, no external
-  build step) saved under `previews/` — see `previews/dashboard-empty-state-airbnb.html` for the
-  established format: a mockup frame around the restyled content, a header block above it with the
-  Mobbin source citation and target token file, and an explicit gap-flag note when a component was
-  improvised. Don't block on Figma access; this path should look and feel like a real deliverable,
-  not a degraded one.
+
+Reach for platform-matched code instead when Figma isn't connected, or when the user explicitly
+wants a shippable file rather than a design canvas ("give me the code", "write it as a component").
+Match the format to the *source* pattern's platform from Step 3 — a pattern found via `search_flows`
+or `search_screens(platform: "web")` or `search_sections` is web-sourced; `search_screens(platform:
+"ios")` is mobile-sourced. Don't default everything to one format regardless of where it came from.
+
+- **Web-sourced**: a single self-contained HTML file (inline CSS, no external build step) saved
+  under `previews/` — see `previews/dashboard-empty-state-airbnb.html` for the established format:
+  a mockup frame around the restyled content, a header block above it with the Mobbin source
+  citation and target token file, and an explicit gap-flag note when a component was improvised.
+  This path is fully verifiable in a Claude Code sandbox (render it with a headless browser before
+  handing it off) — do that, don't just write the HTML and assume it's correct.
+- **Mobile-sourced (iOS)**: a single SwiftUI view file saved under `previews/swiftui/` — see
+  `previews/swiftui/CoinbaseNotificationSettingsView.swift` for the established format: a `Color`
+  hex extension for exact token values, small reusable row/component views instead of one giant
+  body, and a `#Preview` block at the bottom so it drops straight into Xcode's preview canvas.
+  **Important limitation**: a Claude Code sandbox has no Swift toolchain and no macOS, so this file
+  cannot be compiled, previewed, or verified from within the session — unlike the HTML path, this
+  one ships unverified. Say so explicitly in the handoff, and tell the user to open it in Xcode (or
+  paste it into a Swift Playground) to confirm it actually compiles before trusting it. When the
+  target's typography needs a licensed/substitute font, default the SwiftUI code to `.system(...)`
+  for guaranteed compilability, and note in the handoff that bundling the real substitute font
+  (adding the file to the Xcode target + `Info.plist`) is a manual step the user still needs to do
+  for pixel-exact type. Where the target's token schema improvised a component Figma has no native
+  primitive for (e.g. a toggle switch), check whether SwiftUI has a *real* native equivalent first
+  (e.g. `Toggle`) — native platform components are often available in code even when they had to be
+  hand-built from primitives in Figma, and using the real one is strictly better than re-improvising.
 
 ## Handoff notes (always include)
 

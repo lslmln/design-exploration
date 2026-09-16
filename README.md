@@ -20,10 +20,16 @@ reference design systems are bundled as restyle targets (see `design-tokens/`) �
 design-system file exists yet, so today every run either targets one of those 28 or a stand-in you
 name explicitly.
 
-**Out of scope for this project**: there's no path to Xcode Simulator output. This runs through
-Claude Code, which for this project runs in a cloud/remote session with no macOS or Xcode
-available — Simulator preview would require pulling the generated screens down and building/running
-them locally yourself.
+Code output is matched to the *source* pattern's platform rather than one-size-fits-all: a
+web-sourced pattern (a flow, a web screen, or a section) falls back to HTML; a mobile-sourced
+pattern (an iOS screen from Mobbin) falls back to a SwiftUI view file instead.
+
+**Genuinely out of scope**: actually opening Xcode Simulator to show you a live rendered result.
+This runs through Claude Code, which for this project runs in a cloud/remote Linux session with no
+macOS, no Xcode, and no Swift toolchain at all — so the SwiftUI output above is written by hand and
+**not compiled or verified** the way the HTML path is (that one *is* rendered with a headless
+browser before being handed off). Open the `.swift` file in Xcode yourself to confirm it builds and
+to see it in Simulator or the Preview canvas — that's the only place either can actually happen.
 
 ## How to use it
 
@@ -50,6 +56,8 @@ verified match.
   Linear, Mastercard, Meta, Miro, MongoDB, Nike, Notion, Revolut, SpaceX, Stripe, Supabase, Tesla,
   Uber, Vercel, Wise, xAI. Each file uses the same `colors:`/`typography:`/`rounded:`/`spacing:`/
   `components:` schema so the skill can parse it rigorously instead of eyeballing values.
-- `previews/` — HTML fallback output for when Figma isn't connected. Real, working examples (not
-  placeholders) — see `dashboard-empty-state-airbnb.html`.
+- `previews/` — code fallback output for when Figma isn't connected, matched to the source
+  pattern's platform. `dashboard-empty-state-airbnb.html` (web-sourced, rendered and verified with
+  a headless browser) and `swiftui/CoinbaseNotificationSettingsView.swift` (iOS-sourced, hand-written
+  and **unverified** — no Swift toolchain exists in this environment; open it in Xcode to confirm).
 - `.claude/skills/restyle-mobbin/` — the workflow skill itself.
