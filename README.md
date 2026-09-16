@@ -14,23 +14,42 @@ app, server, or API key to manage.
 
 ## Status
 
-Early spike. Currently validating restyle quality and different ways of searching (flows vs.
-sections, different UI patterns, multiple target systems at once) before building a permanent
-output pipeline. Output today is HTML previews for fast visual testing; direct Figma output is in
-progress.
+Working end to end. Restyling writes real nodes directly into Figma via the Figma MCP server; if
+Figma isn't connected, it falls back to a self-contained HTML preview instead of blocking. 28
+reference design systems are bundled as restyle targets (see `design-tokens/`) — no personal
+design-system file exists yet, so today every run either targets one of those 28 or a stand-in you
+name explicitly.
+
+**Out of scope for this project**: there's no path to Xcode Simulator output. This runs through
+Claude Code, which for this project runs in a cloud/remote session with no macOS or Xcode
+available — Simulator preview would require pulling the generated screens down and building/running
+them locally yourself.
 
 ## How to use it
 
-1. Have a target design system's tokens as a `getdesign.md`-style file (see `design-tokens/` for
-   examples covering Apple, Airbnb, and Coinbase — exact colors, type scale, spacing/radius, and
-   named components).
-2. In Claude Code, ask it to search Mobbin for a pattern and restyle the result using one of those
-   token files — e.g. *"Search Mobbin for onboarding flows and restyle them using
-   `design-tokens/coinbase-DESIGN.md`"*.
-3. Claude searches Mobbin, reads the token file, and produces a restyled preview — flagging any
-   part of the source that has no matching component in the target system, rather than guessing
-   silently.
+Just ask, in plain language — no special syntax needed:
+
+> "Find [some UI pattern] on Mobbin and restyle it into [a brand]'s style" — e.g. *"Search Mobbin
+> for onboarding flows and restyle them using Coinbase's design system"* or *"pull Stripe's
+> checkout and redo it in Apple's style, write it to Figma."*
+
+If your request doesn't already specify both a target design system and what to search for, the
+skill asks you interactively (via a structured multiple-choice prompt, not an open-ended "what do
+you want?") rather than guessing — listing whatever's actually in `design-tokens/` as options.
+
+Once resolved, Claude parses the target file's exact colors/type/spacing (never eyeballed),
+searches Mobbin at the right granularity (a whole flow, a single screen, or a section/component),
+and restyles the result — flagging explicitly whenever a source pattern has no real match in the
+target's documented components, rather than silently improvising with the same confidence as a
+verified match.
 
 ## Repo layout
 
-- `design-tokens/` — reference design-system token files used as restyle targets.
+- `design-tokens/` — 28 reference design-system token files used as restyle targets: Apple,
+  Airbnb, Coinbase, Binance, Claude, Clay, Cursor, Discord, ElevenLabs, Framer, IBM, Kraken,
+  Linear, Mastercard, Meta, Miro, MongoDB, Nike, Notion, Revolut, SpaceX, Stripe, Supabase, Tesla,
+  Uber, Vercel, Wise, xAI. Each file uses the same `colors:`/`typography:`/`rounded:`/`spacing:`/
+  `components:` schema so the skill can parse it rigorously instead of eyeballing values.
+- `previews/` — HTML fallback output for when Figma isn't connected. Real, working examples (not
+  placeholders) — see `dashboard-empty-state-airbnb.html`.
+- `.claude/skills/restyle-mobbin/` — the workflow skill itself.

@@ -105,9 +105,12 @@ anything that matches this pattern?
   Step 2, fills bound to the exact hex, corner radii from `rounded:`. Work incrementally per the
   `figma-use` rules (small steps, screenshot to verify, return created node IDs). Position new
   top-level frames away from existing content on the page.
-- **Figma not connected**: fall back to an HTML preview (see `design-tokens/` trials in this repo
-  for the established visual format — phone/desktop mockups with a source citation link and a
-  short note on any gap-filled components) rather than blocking on Figma access.
+- **Figma not connected**: fall back to a single self-contained HTML file (inline CSS, no external
+  build step) saved under `previews/` — see `previews/dashboard-empty-state-airbnb.html` for the
+  established format: a mockup frame around the restyled content, a header block above it with the
+  Mobbin source citation and target token file, and an explicit gap-flag note when a component was
+  improvised. Don't block on Figma access; this path should look and feel like a real deliverable,
+  not a degraded one.
 
 ## Handoff notes (always include)
 
