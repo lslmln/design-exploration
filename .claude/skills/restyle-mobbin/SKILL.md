@@ -45,6 +45,18 @@ same turn and let the person type the one they want (the tool's free-text option
    text, but it's the narrower case: fetching one specific screen just to reskin it is a smaller ask
    than the multi-brand comparison this tool is actually built for, so don't present it as the
    default option. This choice doubles as Step 3's granularity signal.
+
+   **Optionally, also offer to narrow by app category** (finance, shopping/retail, social,
+   messaging, travel, food, music, fitness, productivity, dating, video — the same taxonomy
+   `design-tokens/ios-apps/` already uses, for consistency) alongside "search broadly, no category
+   filter" as the default/first option. Be upfront about what this actually does: Mobbin's
+   `search_flows`/`search_screens`/`search_sections` tools have **no real category or industry
+   filter parameter** — only a free-text `query`, a `platform`, and pagination. A category choice
+   here gets folded into the natural-language query itself (e.g., "checkout flow for banking and
+   fintech apps") rather than applied as a structural filter, so it narrows results in practice but
+   isn't a guarantee. After searching, sanity-check that what came back is actually in the requested
+   category — if Mobbin returns something clearly outside it, drop it from the varied set rather
+   than forcing the count, and say so rather than silently including an off-category result.
 3. **What to restyle it into** (if not already given). There are two separate pools, and which one
    to search depends on the platform from question 1:
    - **Web** → `design-tokens/*.md` (flat files, one per brand, website-derived).
