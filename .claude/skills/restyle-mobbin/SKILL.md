@@ -11,10 +11,39 @@ This accelerates the gap between "browsing inspiration" and "first draft in my o
 it does not make design decisions. Every output is a starting point for a designer to react to,
 not a finished screen. Say so when handing off results.
 
+## Step 0 — Gather the request interactively, if it isn't already complete
+
+Two things are always needed before anything else can happen: which target design system, and
+what pattern to search for. If the user's message already names both clearly (e.g. "pull Stripe's
+checkout and restyle in Airbnb's style"), skip straight to Step 1 — don't interrupt someone who
+already gave you everything.
+
+Otherwise, ask before searching, using `AskUserQuestion` rather than one open-ended "what do you
+want?" prompt:
+
+- **List the real options.** Check `design-tokens/*.md` for what actually exists right now and
+  offer each as a choice, plus an option for "my own system" (which routes into Step 1's
+  no-matching-file handling). Don't hardcode brand names in this skill file — the set of reference
+  files will grow, and a stale hardcoded list is worse than reading the directory each time.
+- **Ask about search granularity too, if unclear.** Step 3 needs to know whether this is a flow, a
+  screen, or a section — that choice changes which Mobbin tool runs and materially changes the
+  results. A few concrete example patterns as options (with room to type something else) beats
+  guessing wrong and having to redo the search.
+- **One structured question beats several round-trips.** Ask target and pattern together in a
+  single `AskUserQuestion` call rather than sequentially — the person already knows both answers,
+  no reason to make them wait through two turns to give them.
+
+The reasoning: Step 1 already refuses to silently substitute a stand-in design system when the
+user's own doesn't exist, and a wrong guess at search granularity means a wasted Mobbin call. A
+short upfront question is cheaper than discovering the mismatch after the fact — but only when the
+request actually leaves something open. A fully-specified request deserves to be run immediately,
+not gated behind a checklist for its own sake.
+
 ## Step 1 — Resolve the target design system
 
 The user names a target either as "our/my system" (their own) or a specific brand ("Coinbase's
-style", "Apple's style"). Resolve it to one file in `design-tokens/*.md`.
+style", "Apple's style") — or, per Step 0, picks one from a presented list. Resolve it to one file
+in `design-tokens/*.md`.
 
 - If "our/my system" has no matching file in `design-tokens/`, say so explicitly before
   proceeding — do not silently substitute a different brand's file as a stand-in. Ask which file
