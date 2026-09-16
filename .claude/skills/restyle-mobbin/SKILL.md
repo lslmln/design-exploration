@@ -13,31 +13,47 @@ not a finished screen. Say so when handing off results.
 
 ## Step 0 — Gather the request interactively, if it isn't already complete
 
-Two things are always needed before anything else can happen: which target design system, and
-what pattern to search for. If the user's message already names both clearly (e.g. "pull Stripe's
-checkout and restyle in Airbnb's style"), skip straight to Step 1 — don't interrupt someone who
-already gave you everything.
+Three things are always needed before anything else can happen, gathered in this order: **what to
+search for**, **what to restyle it into**, and **what format the output should take**. If the
+user's message already names all three clearly (e.g. "pull Stripe's checkout, restyle in Airbnb's
+style, and write it to Figma"), skip straight to Step 1 — don't interrupt someone who already gave
+you everything. Ask about only whatever's actually missing; don't re-ask something already answered.
 
-Otherwise, ask before searching, using `AskUserQuestion` rather than one open-ended "what do you
-want?" prompt:
+Ask what's missing before searching, using `AskUserQuestion` rather than one open-ended "what do
+you want?" prompt — but be honest about that tool's shape: it supports at most 4 clickable options
+per question, so it cannot present a full list as chips once there are more than a few choices.
+Don't fake a dropdown that doesn't fit; when a list is long, say the full list in plain text in the
+same turn and let the person type the one they want (the tool's free-text option handles this).
 
-- **List the real options.** Check `design-tokens/*.md` for what actually exists right now and
-  offer each as a choice, plus an option for "my own system" (which routes into Step 1's
-  no-matching-file handling). Don't hardcode brand names in this skill file — the set of reference
-  files will grow, and a stale hardcoded list is worse than reading the directory each time.
-- **Ask about search granularity too, if unclear.** Step 3 needs to know whether this is a flow, a
-  screen, or a section — that choice changes which Mobbin tool runs and materially changes the
-  results. A few concrete example patterns as options (with room to type something else) beats
-  guessing wrong and having to redo the search.
-- **One structured question beats several round-trips.** Ask target and pattern together in a
-  single `AskUserQuestion` call rather than sequentially — the person already knows both answers,
-  no reason to make them wait through two turns to give them.
+1. **What to search for** (if not already given). A few concrete example patterns as clickable
+   options (a named app's screen, a whole flow, a page section/component), plus room to type
+   something else — this doubles as Step 3's granularity signal, so getting it here avoids a second
+   round-trip later.
+2. **What to restyle it into** (if not already given). List every file actually in
+   `design-tokens/*.md` — as plain text if there are more than ~3, since the chip limit won't fit
+   them — plus an option for "my own system" (routes into Step 1's no-matching-file handling). Don't
+   hardcode brand names in this skill file itself; the reference set grows, so read the directory
+   fresh each time rather than trusting a list written down here.
+3. **What format the output should be** (if not already given, and once Step 3's platform is known
+   or knowable from the pattern chosen in question 1). Options: **Figma** (a design canvas — the
+   default, ask for the target file's URL if none has been mentioned in this conversation), **HTML**
+   (a real file you can open immediately, best for web-sourced patterns), or **SwiftUI code** (best
+   for iOS-sourced patterns — ask whether it should be a standalone file or land in an existing iOS
+   repo/path, since "Simulator" itself isn't something this skill can produce or open — see Step 5).
+
+Combine what's missing into as few `AskUserQuestion` calls as possible — one call can carry multiple
+questions, so don't spread three questions across three round-trips when one call handles it.
 
 The reasoning: Step 1 already refuses to silently substitute a stand-in design system when the
-user's own doesn't exist, and a wrong guess at search granularity means a wasted Mobbin call. A
-short upfront question is cheaper than discovering the mismatch after the fact — but only when the
+user's own doesn't exist, a wrong guess at search granularity means a wasted Mobbin call, and a
+wrong guess at output format means redoing the entire build in a different medium. A short upfront
+question is cheaper than discovering any of those mismatches after the fact — but only when the
 request actually leaves something open. A fully-specified request deserves to be run immediately,
-not gated behind a checklist for its own sake.
+not gated behind a checklist for its own sake. There's no separate "preview, then approve, then
+output" stage beyond this — for Figma, the incremental build-and-screenshot in Step 5 already *is*
+the live preview (small steps, visible as they happen, trivially undoable); for HTML/SwiftUI, the
+file itself is the deliverable, so the only thing that must happen after generating it is actually
+surfacing it to the person rather than leaving it silent in the repo (see Step 5).
 
 ## Step 1 — Resolve the target design system
 
@@ -102,12 +118,19 @@ anything that matches this pattern?
 
 Figma is the default output whenever it's connected, regardless of the source pattern's platform —
 it's a canvas, not code, so it fits a mobile-sourced pattern just as well as a web-sourced one.
+"Simulator" is never something to promise as an output format itself — a Claude Code sandbox cannot
+open or run Simulator (see the SwiftUI note below); it's only ever something the *person* opens
+locally, afterward, with a file this skill handed them.
 
-- **Figma connected**: load the `figma-use` skill (mandatory prerequisite for `use_figma`) and
-  build real nodes — auto-layout frames, text with the exact font/size/weight/letter-spacing from
-  Step 2, fills bound to the exact hex, corner radii from `rounded:`. Work incrementally per the
-  `figma-use` rules (small steps, screenshot to verify, return created node IDs). Position new
-  top-level frames away from existing content on the page.
+- **Figma connected**: first make sure you know which file to write into — use a file URL/key the
+  person already gave in this conversation, or ask for one (per Step 0) rather than assuming or
+  reusing a file from a previous, unrelated task. Then load the `figma-use` skill (mandatory
+  prerequisite for `use_figma`) and build real nodes — auto-layout frames, text with the exact
+  font/size/weight/letter-spacing from Step 2, fills bound to the exact hex, corner radii from
+  `rounded:`. Work incrementally per the `figma-use` rules (small steps, screenshot to verify,
+  return created node IDs). Position new top-level frames away from existing content on the page.
+  The incremental screenshots as you build **are** the preview — there's no separate approval gate
+  before this counts as "done."
 
 Reach for platform-matched code instead when Figma isn't connected, or when the user explicitly
 wants a shippable file rather than a design canvas ("give me the code", "write it as a component").
@@ -120,22 +143,28 @@ or `search_screens(platform: "web")` or `search_sections` is web-sourced; `searc
   a mockup frame around the restyled content, a header block above it with the Mobbin source
   citation and target token file, and an explicit gap-flag note when a component was improvised.
   This path is fully verifiable in a Claude Code sandbox (render it with a headless browser before
-  handing it off) — do that, don't just write the HTML and assume it's correct.
-- **Mobile-sourced (iOS)**: a single SwiftUI view file saved under `previews/swiftui/` — see
-  `previews/swiftui/CoinbaseNotificationSettingsView.swift` for the established format: a `Color`
-  hex extension for exact token values, small reusable row/component views instead of one giant
-  body, and a `#Preview` block at the bottom so it drops straight into Xcode's preview canvas.
-  **Important limitation**: a Claude Code sandbox has no Swift toolchain and no macOS, so this file
-  cannot be compiled, previewed, or verified from within the session — unlike the HTML path, this
-  one ships unverified. Say so explicitly in the handoff, and tell the user to open it in Xcode (or
-  paste it into a Swift Playground) to confirm it actually compiles before trusting it. When the
-  target's typography needs a licensed/substitute font, default the SwiftUI code to `.system(...)`
-  for guaranteed compilability, and note in the handoff that bundling the real substitute font
-  (adding the file to the Xcode target + `Info.plist`) is a manual step the user still needs to do
-  for pixel-exact type. Where the target's token schema improvised a component Figma has no native
-  primitive for (e.g. a toggle switch), check whether SwiftUI has a *real* native equivalent first
-  (e.g. `Toggle`) — native platform components are often available in code even when they had to be
-  hand-built from primitives in Figma, and using the real one is strictly better than re-improvising.
+  handing it off) — do that, don't just write the HTML and assume it's correct. Once it's verified,
+  **surface it to the person directly** (open it as a rendered preview, or send the file) rather
+  than leaving it sitting silently in the repo — generating the file isn't the finish line, them
+  actually seeing it is.
+- **Mobile-sourced (iOS)**: a single SwiftUI view file — saved under `previews/swiftui/` for a
+  standalone file, or at the path the person specified if they're targeting an existing iOS repo
+  (per Step 0). See `previews/swiftui/CoinbaseNotificationSettingsView.swift` for the established
+  format: a `Color` hex extension for exact token values, small reusable row/component views
+  instead of one giant body, and a `#Preview` block at the bottom so it drops straight into Xcode's
+  preview canvas. **Important limitation**: a Claude Code sandbox has no Swift toolchain and no
+  macOS, so this file cannot be compiled, previewed, or verified from within the session — unlike
+  the HTML path, this one ships unverified, and Simulator itself only ever runs on the person's own
+  Mac. Say so explicitly in the handoff, send them the file directly, and tell them to open it in
+  Xcode (or paste it into a Swift Playground) to confirm it actually compiles before trusting it.
+  When the target's typography needs a licensed/substitute font, default the SwiftUI code to
+  `.system(...)` for guaranteed compilability, and note in the handoff that bundling the real
+  substitute font (adding the file to the Xcode target + `Info.plist`) is a manual step the person
+  still needs to do for pixel-exact type. Where the target's token schema improvised a component
+  Figma has no native primitive for (e.g. a toggle switch), check whether SwiftUI has a *real*
+  native equivalent first (e.g. `Toggle`) — native platform components are often available in code
+  even when they had to be hand-built from primitives in Figma, and using the real one is strictly
+  better than re-improvising.
 
 ## Handoff notes (always include)
 
