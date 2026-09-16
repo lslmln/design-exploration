@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Your Cart — restyled into Duolingo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green: #58CC02; --green-shadow: #58A700; --mask-green: #89E219;
+    --eel: #4B4B4B; --hare: #AFAFAF; --swan: #E5E5E5;
+    --canvas: #FFFFFF;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: Nunito, -apple-system, system-ui, sans-serif;
+    background: var(--canvas);
+    width: 393px;
+    margin: 0 auto;
+    padding: 24px 16px 32px;
+  }
+  .backlink { display: block; font-size: 12px; color: var(--hare); text-decoration: none; margin-bottom: 16px; }
+  h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.4px; color: var(--eel); margin: 0 0 20px; }
+  .item-row { display: flex; gap: 12px; margin-bottom: 16px; }
+  .thumb { width: 64px; height: 64px; border-radius: 12px; background: var(--swan); flex-shrink: 0; }
+  .item-meta { display: flex; flex-direction: column; gap: 4px; justify-content: center; }
+  .item-name { font-size: 16px; font-weight: 600; color: var(--eel); }
+  .item-qty { font-size: 14px; font-weight: 600; color: var(--hare); }
+  .item-price { font-size: 18px; font-weight: 800; color: var(--green); margin: 8px 0 20px; }
+
+  .progress-label { font-size: 13px; font-weight: 600; color: var(--hare); margin-bottom: 6px; }
+  .progress-track { height: 12px; border-radius: 500px; background: var(--swan); overflow: hidden; margin-bottom: 24px; }
+  .progress-fill { height: 12px; width: 24%; border-radius: 500px; background: var(--mask-green); }
+
+  .btn { width: 100%; border: none; border-radius: 16px; font-family: inherit; font-weight: 800;
+    font-size: 15px; letter-spacing: 0.3px; text-transform: uppercase; height: 56px; margin-bottom: 20px; }
+  .btn-neutral { background: var(--canvas); color: var(--eel); border: 2px solid var(--swan);
+    box-shadow: 0 4px 0 var(--swan); }
+  .btn-primary { background: var(--green); color: #fff; box-shadow: 0 4px 0 var(--green-shadow); }
+
+  .summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .summary-label { font-size: 16px; font-weight: 600; color: var(--eel); }
+  .summary-value { font-size: 20px; font-weight: 800; color: var(--eel); }
+</style>
+</head>
+<body>
+  <a class="backlink" href="index.html">← Back to comparison</a>
+  <h1>Your Cart</h1>
+  <div class="item-row">
+    <div class="thumb"></div>
+    <div class="item-meta">
+      <div class="item-name">OUROBOROS Iron-On Patch</div>
+      <div class="item-qty">Qty 1 · Red</div>
+    </div>
+  </div>
+  <div class="item-price">$6.06</div>
+  <div class="progress-label">Get free shipping when you spend $28.94 more</div>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <button class="btn btn-neutral">Apply coupon code</button>
+  <div class="summary-row">
+    <div class="summary-label">Estimated total</div>
+    <div class="summary-value">$6.06</div>
+  </div>
+  <button class="btn btn-primary">Go to checkout</button>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Bag — restyled into Duolingo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green: #58CC02; --green-shadow: #58A700;
+    --eel: #4B4B4B; --hare: #AFAFAF; --swan: #E5E5E5; --polar: #F7F7F7;
+    --bee-yellow: #FFC800; --canvas: #FFFFFF;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: Nunito, -apple-system, system-ui, sans-serif;
+    background: var(--canvas);
+    width: 393px;
+    margin: 0 auto;
+    padding: 24px 16px 32px;
+  }
+  .backlink { display: block; font-size: 12px; color: var(--hare); text-decoration: none; margin-bottom: 16px; }
+  h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.4px; color: var(--eel); margin: 0 0 20px; }
+  .item-row { display: flex; gap: 12px; margin-bottom: 16px; }
+  .thumb { width: 64px; height: 64px; border-radius: 12px; background: var(--swan); flex-shrink: 0; }
+  .item-meta { display: flex; flex-direction: column; gap: 4px; justify-content: center; }
+  .item-name { font-size: 16px; font-weight: 600; color: var(--eel); }
+  .item-qty { font-size: 14px; font-weight: 600; color: var(--hare); }
+  .item-price { font-size: 18px; font-weight: 800; color: var(--green); margin: 8px 0 20px; }
+
+  .reward-chip { display: flex; align-items: center; gap: 8px; background: var(--polar);
+    border-radius: 500px; padding: 10px 14px; margin-bottom: 24px; }
+  .reward-icon { color: var(--bee-yellow); font-size: 18px; }
+  .reward-label { font-size: 14px; font-weight: 600; color: var(--eel); flex: 1; }
+  .reward-value { font-size: 18px; font-weight: 800; color: var(--bee-yellow); }
+
+  .summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .summary-row.total { margin-top: 12px; margin-bottom: 24px; }
+  .summary-label { font-size: 15px; font-weight: 600; color: var(--hare); }
+  .summary-row.total .summary-label { font-size: 16px; color: var(--eel); }
+  .summary-value { font-size: 15px; font-weight: 600; color: var(--eel); }
+  .summary-row.total .summary-value { font-size: 20px; font-weight: 800; }
+
+  .btn { width: 100%; border: none; border-radius: 16px; font-family: inherit; font-weight: 800;
+    font-size: 15px; letter-spacing: 0.3px; text-transform: uppercase; height: 56px; }
+  .btn-primary { background: var(--green); color: #fff; box-shadow: 0 4px 0 var(--green-shadow); }
+</style>
+</head>
+<body>
+  <a class="backlink" href="index.html">← Back to comparison</a>
+  <h1>Bag</h1>
+  <div class="item-row">
+    <div class="thumb"></div>
+    <div class="item-meta">
+      <div class="item-name">Men's UA Launch Unlined Shorts</div>
+      <div class="item-qty">XL · Castlerock</div>
+    </div>
+  </div>
+  <div class="item-price">$38.00</div>
+  <div class="reward-chip">
+    <span class="reward-icon">◆</span>
+    <div class="reward-label">Points you'll earn</div>
+    <div class="reward-value">+190</div>
+  </div>
+  <div class="summary-row"><div class="summary-label">Subtotal</div><div class="summary-value">$38.00</div></div>
+  <div class="summary-row"><div class="summary-label">Shipping</div><div class="summary-value">$8.00</div></div>
+  <div class="summary-row total"><div class="summary-label">Estimated total</div><div class="summary-value">$46.00</div></div>
+  <button class="btn btn-primary">Checkout</button>
+</body>
+</html>

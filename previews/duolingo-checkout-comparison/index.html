@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Checkout/cart flows → Duolingo (comparison)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Nunito, -apple-system, system-ui, sans-serif;
+    background: #e8e8e8;
+    padding: 40px 16px;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+  .meta {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #444;
+  }
+  .meta h1 { font-size: 16px; font-weight: 700; color: #111; margin: 0 0 10px; }
+  .meta a { color: #111; }
+  .meta ul { margin: 6px 0 0; padding-left: 18px; }
+  .meta .gap { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; }
+  .meta .gap strong { color: #111; }
+  .meta .note { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; color: #666; font-size: 13px; }
+
+  .grid { display: flex; flex-wrap: wrap; gap: 24px; }
+  .tile { width: 220px; }
+  .tile > a { display: block; text-decoration: none; }
+  .thumb-wrap {
+    width: 220px; height: 300px; overflow: hidden; position: relative;
+    border-radius: 14px; background: #fff; box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  }
+  .thumb-wrap iframe {
+    width: 393px; height: 536px; border: 0;
+    position: absolute; top: 0; left: 0;
+    transform: scale(0.56); transform-origin: top left;
+    pointer-events: none;
+  }
+  .tile-label { margin-top: 10px; font-size: 13px; color: #333; font-weight: 700; }
+  .tile-sub { font-size: 12px; color: #888; margin-top: 2px; }
+  .tile:hover .thumb-wrap { outline: 2px solid #58CC02; outline-offset: 2px; }
+
+  .footnote { text-align: center; font-size: 12px; color: #999; margin-top: 32px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="meta">
+      <h1>Checkout/cart flows — restyled into Duolingo's design system</h1>
+      <div>Target tokens: <code>design-tokens/ios-apps/misc/duolingo/DESIGN.md</code> — colors, type, radius pulled exactly from the file.</div>
+      <div>Source patterns (multi-brand comparison, per this skill's default behavior — all iOS-sourced via <code>search_flows(platform: "ios")</code>). Click a preview to open the full page at real iPhone 17 width (393px).</div>
+      <ul>
+        <li><a href="https://mobbin.com/flows/b91fe80b-ba7a-47ae-b394-011b48d23209" target="_blank" rel="noopener">Etsy — "Adding an item to cart"</a></li>
+        <li><a href="https://mobbin.com/flows/eab13d90-ca43-4141-80ee-849aabe60726" target="_blank" rel="noopener">Under Armour — "Purchasing a product"</a></li>
+        <li><a href="https://mobbin.com/flows/dbc9c0e8-c87f-4b64-bb52-fe180f7c141c" target="_blank" rel="noopener">IKEA — "Checking out an item"</a></li>
+      </ul>
+      <div class="gap">
+        <strong>Gap flagged:</strong> Duolingo is a gamified language app with zero commerce
+        vocabulary — no cart, payment, or price-row components anywhere in its tokens. Every layout
+        here is improvised: the free-shipping progress bar reuses Duolingo's lesson-progress bar
+        exactly, Under Armour's reward points reuse the HUD-chip pattern, and IKEA's pickup-location
+        picker reuses the answer-tile idle/selected color states verbatim. None of this reads with
+        the same confidence as a documented commerce component, because none of it is one.
+      </div>
+      <div class="note">
+        This is the HTML companion to <code>previews/swiftui/DuolingoCheckoutComparison.swift</code>
+        — same three screens, same tokens, but actually renderable and verified here (headless
+        browser), unlike the SwiftUI file which can't be compiled or previewed in this environment.
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="tile">
+        <a href="etsy.html"><div class="thumb-wrap"><iframe src="etsy.html"></iframe></div></a>
+        <div class="tile-label">Etsy's cart → restyled</div>
+        <div class="tile-sub"><a href="https://mobbin.com/flows/b91fe80b-ba7a-47ae-b394-011b48d23209" target="_blank" rel="noopener">Source on Mobbin ↗</a></div>
+      </div>
+      <div class="tile">
+        <a href="under-armour.html"><div class="thumb-wrap"><iframe src="under-armour.html"></iframe></div></a>
+        <div class="tile-label">Under Armour's bag → restyled</div>
+        <div class="tile-sub"><a href="https://mobbin.com/flows/eab13d90-ca43-4141-80ee-849aabe60726" target="_blank" rel="noopener">Source on Mobbin ↗</a></div>
+      </div>
+      <div class="tile">
+        <a href="ikea.html"><div class="thumb-wrap"><iframe src="ikea.html"></iframe></div></a>
+        <div class="tile-label">IKEA's checkout → restyled</div>
+        <div class="tile-sub"><a href="https://mobbin.com/flows/dbc9c0e8-c87f-4b64-bb52-fe180f7c141c" target="_blank" rel="noopener">Source on Mobbin ↗</a></div>
+      </div>
+    </div>
+
+    <div class="footnote">
+      First-draft starting points for a designer to react to — not finished design decisions.
+    </div>
+  </div>
+</body>
+</html>
