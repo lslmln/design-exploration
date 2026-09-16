@@ -231,20 +231,30 @@ Match the format to the *source* pattern's platform from Step 3 — a pattern fo
 or `search_screens(platform: "web")` or `search_sections` is web-sourced; `search_screens(platform:
 "ios")` is mobile-sourced. Don't default everything to one format regardless of where it came from.
 
-- **Web-sourced**: a single self-contained HTML file (inline CSS, no external build step) saved
-  under `previews/` — a header block above the content with the Mobbin source citation and target
-  token file, and an explicit gap-flag note when a component was improvised. **The mockup frame
-  itself must look like a desktop browser window, not a phone**: a wide canvas (match the target's
-  own documented container width, e.g. "max content width ~1280px" if it says so) with browser
-  chrome — traffic-light dots *and* a URL bar — containing the content centered/laid out the way
-  the real source screenshots actually showed it. This was gotten wrong once already: an early file
-  in this repo used a narrow phone-card shape for genuinely web-sourced content, which reads as "a
-  mobile app in a browser" instead of an actual webpage — don't repeat that mismatch by copying an
-  old file's shape without checking whether it actually matches this content's platform. Mobile-
-  sourced HTML previews (when SwiftUI wasn't requested) use a narrow phone-shaped frame instead;
-  the two are not interchangeable.
-  This path is fully verifiable in a Claude Code sandbox (render it with a headless browser before
-  handing it off) — do that, don't just write the HTML and assume it's correct. Once it's verified,
+- **Web-sourced**: don't draw a *picture* of a browser — the person's real browser already provides
+  real chrome the moment they open the file, so an illustrated mockup frame around the content is
+  redundant at best and misleading at worst (an early version of this file used a narrow phone-card
+  shape for genuinely web-sourced content, which read as "a mobile app in a browser" instead of an
+  actual webpage — the fix wasn't a better-drawn frame, it was removing the fake frame entirely).
+  Each restyled screen should be a real, full-bleed HTML page at real width — inline CSS, no
+  external build step, no illustrated chrome — that genuinely looks like the target's own site at
+  that breakpoint when opened.
+  - **Single source**: one such page is the whole deliverable — save it under `previews/`.
+  - **Multi-brand comparison (the default)**: save a small folder under `previews/<name>/` — see
+    `previews/signup-flows-linear/` for the established structure: one real full-bleed page per
+    source app (`jira.html`, `perplexity.html`, ...), each with a small unobtrusive "← Back to
+    comparison" link, plus an `index.html` contents page carrying the header block (Mobbin source
+    citations, target token file, gap-flag notes) and a live thumbnail per page that links to it.
+    Build thumbnails with a scaled, non-interactive `<iframe>` of the real page (`transform: scale();
+    pointer-events: none`) inside a fixed-size clipping wrapper, so the thumbnail is never a
+    hand-duplicated summary that can drift out of sync with the real page. **Don't nest an `<a>`
+    inside another `<a>`** (e.g. a "View source on Mobbin" link inside the thumbnail's link to the
+    full page) — it's invalid HTML that makes the browser silently auto-close the outer anchor
+    early, scrambling the layout in a way that's confusing to debug from the rendered result alone;
+    put the citation link as a sibling next to the thumbnail link, not inside it.
+  This path is fully verifiable in a Claude Code sandbox (render every page — index and each full
+  page — with a headless browser before handing it off) — do that, don't just write the HTML and
+  assume it's correct. Once it's verified,
   **surface it to the person directly** (open it as a rendered preview, or send the file) rather
   than leaving it sitting silently in the repo — generating the file isn't the finish line, them
   actually seeing it is.

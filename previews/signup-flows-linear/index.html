@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Sign-up flows → Linear (comparison)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Inter, -apple-system, system-ui, sans-serif;
+    background: #e8e8e8;
+    padding: 40px 16px;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+  .meta {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #444;
+  }
+  .meta h1 { font-size: 16px; font-weight: 600; color: #111; margin: 0 0 10px; }
+  .meta a { color: #111; }
+  .meta .gap { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; }
+  .meta .gap strong { color: #111; }
+
+  .grid { display: flex; flex-wrap: wrap; gap: 24px; }
+
+  .tile {
+    display: block;
+    width: 320px; flex: 0 0 320px;
+  }
+  .tile > a { display: block; text-decoration: none; }
+  .thumb-wrap {
+    width: 320px; height: 240px; overflow: hidden; position: relative;
+    border-radius: 10px; background: #010102; box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  }
+  .thumb-wrap iframe {
+    width: 1280px; height: 960px; border: 0;
+    position: absolute; top: 0; left: 0;
+    transform: scale(0.26); transform-origin: top left;
+    pointer-events: none;
+  }
+  .tile-label {
+    margin-top: 10px; font-size: 13px; color: #333; font-weight: 500;
+  }
+  .tile-sub { font-size: 12px; color: #888; margin-top: 2px; }
+  .tile:hover .thumb-wrap { outline: 2px solid #5e6ad2; outline-offset: 2px; }
+
+  .footnote { text-align: center; font-size: 12px; color: #999; margin-top: 32px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="meta">
+      <h1>Sign-up flows — restyled into Linear's design system</h1>
+      <div>Target tokens: <code>design-tokens/linear-DESIGN.md</code> — colors, type, radius pulled exactly from the file.</div>
+      <div>Source patterns (multi-brand comparison, per this skill's default behavior — all web-sourced via <code>search_flows(platform: "web")</code>). Click a preview to open the full page at real width.</div>
+      <div class="gap">
+        <strong>Gap flagged:</strong> Linear's tokens have no dedicated auth-card component, but they
+        do have real <code>text-input</code> and <code>button-primary</code>/<code>button-secondary</code>
+        primitives — this is a smaller, more defensible improvisation than a total gap: the primitives
+        exist and are used exactly as documented (8px radius, 8px/14px button padding, 1px hairline
+        borders), just assembled into a layout Linear's own marketing site doesn't show.
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="tile">
+        <a href="jira.html"><div class="thumb-wrap"><iframe src="jira.html"></iframe></div></a>
+        <div class="tile-label">Jira's sign-up → restyled</div>
+        <div class="tile-sub"><a href="https://mobbin.com/flows/a9262dda-0fb7-4350-ac55-a9b8b1a5b29c" target="_blank" rel="noopener">Source on Mobbin ↗</a></div>
+      </div>
+      <div class="tile">
+        <a href="perplexity.html"><div class="thumb-wrap"><iframe src="perplexity.html"></iframe></div></a>
+        <div class="tile-label">Perplexity's magic-link step → restyled</div>
+        <div class="tile-sub"><a href="https://mobbin.com/flows/a461b379-bead-4ecb-8ea9-df84aef3ccb9" target="_blank" rel="noopener">Source on Mobbin ↗</a></div>
+      </div>
+      <div class="tile">
+        <a href="resend.html"><div class="thumb-wrap"><iframe src="resend.html"></iframe></div></a>
+        <div class="tile-label">Resend's account creation → restyled</div>
+        <div class="tile-sub"><a href="https://mobbin.com/flows/39e28c02-5ee7-4caf-ad5b-f9177c26aeea" target="_blank" rel="noopener">Source on Mobbin ↗</a></div>
+      </div>
+    </div>
+
+    <div class="footnote">
+      First-draft starting points for a designer to react to — not finished design decisions.
+    </div>
+  </div>
+</body>
+</html>
