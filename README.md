@@ -2,15 +2,13 @@
 
 ## What this is
 
-Designers exploring a new feature look at how established products solve the same problem, then
-judge what's worth adapting into their own design language — documented system or not. But you
-can't judge fit until you see it in your own colors, type, and components, and today that means
-eyeballing it or rebuilding it by hand, one option at a time.
+Designers exploring a new feature look at how established products approach a pattern — tools
+like [Mobbin](https://mobbin.com) already exist so you can browse real screens for inspiration.
 
-This tool speeds up that seeing step: pull a UI pattern from real products via
-[Mobbin](https://mobbin.com), point at a target design system's real tokens, and get it restyled
-into the target's actual colors, type, spacing, and components instantly — across several source
-apps at once, so you can compare more options, faster.
+This project takes that one step further: pull a pattern from real products via Mobbin, point at
+your target design system's real tokens, and see it restyled into your own colors, type, spacing,
+and components instantly — across several source apps at once, so you can visualize more options,
+faster.
 
 Built with AI because:
 
