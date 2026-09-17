@@ -2,12 +2,29 @@
 
 ## What this is
 
-Designers researching a new feature usually browse real screens from other products for
-inspiration, then have to manually rebuild whatever's useful in their own design system by hand.
-This project skips that manual step: search [Mobbin](https://mobbin.com) for a UI pattern (a flow,
-a screen, or a section like a pricing table), point at a target design system's real tokens, and
-get that pattern restyled into the target's actual colors, type, spacing, and components —
-instantly, no rebuilding by hand.
+Designers exploring a new feature routinely look at how established products solve the same
+problem — competitor analysis, inspiration boards, "how does X handle this" — then adapt what
+they find into their own context, whether or not that context is a formally documented design
+system. That adaptation step is manual today: find the pattern, eyeball or rebuild it, restyle it
+by hand.
+
+This project accelerates that step — not to replace the judgment call of what to adapt, but to
+make exploration itself faster and wider. Pull a pattern from real products via
+[Mobbin](https://mobbin.com) (a flow, a screen, or a section like a pricing table), point at a
+target design system's real tokens, and see it restyled into the target's actual colors, type,
+spacing, and components instantly — across several source apps at once, not one at a time. It
+extends what's possible past manually browsing Mobbin: the bottleneck moves from "how many
+examples can I stand to rebuild by hand" to "how many do I want to compare."
+
+It's built with AI deliberately, for two different reasons:
+
+1. **Why AI to build it.** A bespoke tool like this doesn't clear the bar to build by hand — the
+   engineering cost isn't justified without a KPI behind it, so it'd only make sense as a passion
+   project. AI collapses that cost enough to build it at all, in a fraction of the time.
+2. **Why AI to run it.** The core operation needs judgment a fixed script can't provide: matching
+   an arbitrary source pattern to an arbitrary target's real component vocabulary, and being honest
+   when nothing matches instead of silently guessing. That's not a nice-to-have wrapped around a
+   deterministic pipeline — it's the reason this has to be AI-driven rather than scripted.
 
 It's built to run through Claude Code with the Mobbin MCP server connected — there's no separate
 app, server, or API key to manage.
@@ -67,7 +84,14 @@ verified match.
   see `ios-apps/ATTRIBUTION.md`); these are prose-format (no YAML front matter), which the skill
   parses with the same rigor by reading the exact table row/bullet instead of a YAML key.
 - `previews/` — code fallback output for when Figma isn't connected, matched to the source
-  pattern's platform. `dashboard-empty-state-airbnb.html` (web-sourced, rendered and verified with
-  a headless browser) and `swiftui/CoinbaseNotificationSettingsView.swift` (iOS-sourced, hand-written
-  and **unverified** — no Swift toolchain exists in this environment; open it in Xcode to confirm).
+  pattern's platform. A multi-brand comparison is a folder (e.g. `signup-flows-linear/`,
+  `duolingo-checkout-comparison/`) with an `index.html` contents page — live iframe thumbnails
+  linking out to one real, full-bleed page per source app, each rendered at the actual breakpoint
+  (real desktop width for web, the exact chosen device width for app) rather than an illustrated
+  browser or phone mockup — plus a single-file example (`dashboard-empty-state-airbnb.html`). All
+  HTML is rendered and verified with a headless browser before handoff. `swiftui/` holds the
+  matching SwiftUI files for iOS-sourced patterns (e.g. `CoinbaseNotificationSettingsView.swift`,
+  `DuolingoCheckoutComparison.swift`) — hand-written and **unverified**, since no Swift toolchain
+  exists in this environment; each ships with an HTML companion at real device width so you can see
+  it without Xcode, but open the `.swift` file there yourself to confirm it builds.
 - `.claude/skills/restyle-mobbin/` — the workflow skill itself.
