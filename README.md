@@ -3,14 +3,17 @@
 ## What this is
 
 Designers exploring a new feature routinely look at how established products solve the same
-problem — competitor analysis, inspiration boards, "how does X handle this" — then adapt what
-they find into their own context, whether or not that context is a formally documented design
-system. That adaptation step is manual today: find the pattern, eyeball or rebuild it, restyle it
-by hand.
+problem — competitor analysis, inspiration boards, "how does X handle this" — for ideas worth
+bringing into their own context, whether or not that context is a formally documented design
+system. The point was never to copy a pattern as-is: it's seeing a structure or component you
+hadn't considered actually rendered in your own colors, type, and components, so you can tell
+whether it sparks anything worth taking further. Today, seeing that means eyeballing it or
+rebuilding it by hand, one option at a time — which caps how many you'll realistically try.
 
-This project accelerates that step — not to replace the judgment call of what to adapt, but to
-make exploration itself faster and wider. Pull a pattern from real products via
-[Mobbin](https://mobbin.com) (a flow, a screen, or a section like a pricing table), point at a
+This project accelerates that seeing step — not to replace the judgment call of what's worth
+keeping, but to make exploring more options fast enough to actually do it. Pull a pattern from
+real products via [Mobbin](https://mobbin.com) (a flow, a screen, or a section like a pricing
+table), point at a
 target design system's real tokens, and see it restyled into the target's actual colors, type,
 spacing, and components instantly — across several source apps at once, not one at a time. It
 extends what's possible past manually browsing Mobbin: the bottleneck moves from "how many
