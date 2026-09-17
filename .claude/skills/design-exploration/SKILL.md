@@ -184,6 +184,16 @@ varied set (different source apps, not near-duplicates of the same app) and rest
 what was excluded and why if you narrowed a larger result set down. Only restyle a single source
 when the request named one specific app, or when Mobbin genuinely only returned one usable match.
 
+**Only build a screen whose actual image you've inspected — never improvise one from general
+knowledge.** A flow's `mobbin_url` is real, but it's a citation for the flow, not automatically for
+every screen inside it — `search_flows` returns evenly-spaced preview images, not necessarily one
+for every named step. If a step you want (e.g. a "delivery address" step inside a longer checkout
+flow) isn't among the images actually returned, re-query `search_screens` for that specific step by
+name rather than guessing what it probably looks like from general knowledge. If no real screenshot
+turns up for it after that, drop the step entirely — never fill the gap with an invented screen and
+cite the flow's link next to it, since that makes a fabricated screen look exactly as verified as a
+real one (a real bug caught in testing, not a hypothetical).
+
 ## Step 4 — Match content to the target's real component vocabulary
 
 For each source screen, before restyling: does the target file's Component Stylings section have
