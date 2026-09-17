@@ -10,13 +10,6 @@ your target design system's real tokens, and see it restyled into your own color
 and components instantly — across several source apps at once, so you can visualize more options,
 faster.
 
-Built with AI because:
-
-1. **To build it** — this doesn't clear the bar to build by hand without a KPI behind it; AI made
-   it cheap enough to just build.
-2. **To run it** — matching an arbitrary pattern to an arbitrary system's real components, and
-   being honest when nothing matches, needs judgment a fixed script can't give.
-
 Runs through Claude Code with the Mobbin MCP server connected — no separate app, server, or API
 key.
 
