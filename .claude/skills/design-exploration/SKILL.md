@@ -1,6 +1,6 @@
 ---
 name: design-exploration
-description: Search Mobbin for a UI pattern (a flow, screen, or section) — by default across several different source brands doing the same pattern, for side-by-side comparison — and restyle all of it into a target design system's real tokens (the user's own, a named web brand, or a native iOS app), reading exact values from a design.md/ reference file, then writing the result directly into Figma (or a platform-matched code file — HTML or SwiftUI — if Figma isn't connected). Use whenever a designer wants inspiration from real products adapted into a specific design language, e.g. "find onboarding flows and restyle them in our system" or "pull how a few different apps do checkout and restyle them all in Airbnb's style."
+description: Search Mobbin for an iOS app UI pattern (a flow or screen) — by default across several different source apps doing the same pattern, for side-by-side comparison — and restyle all of it into a target iOS app's real design tokens, reading exact values from a design.md/ios-apps/ reference file, then writing the result directly into Figma. Use whenever a designer wants inspiration from real iOS apps adapted into a specific design language, e.g. "find onboarding flows and restyle them in our system" or "pull how a few different apps do checkout and restyle them all in Duolingo's style."
 ---
 
 # design-exploration — Mobbin → design tokens → Figma
@@ -11,7 +11,12 @@ This accelerates the gap between "browsing inspiration" and "first draft in my o
 it does not make design decisions. Every output is a starting point for a designer to react to,
 not a finished screen. Say so when handing off results.
 
-Two boundaries worth being explicit about, since both come up in practice:
+Scope, kept deliberately narrow:
+- **iOS apps only.** Source patterns come from Mobbin's iOS app screens; targets come from
+  `design.md/ios-apps/`. No web patterns, no web design systems — don't offer either.
+- **Figma only.** Every result is written directly into a Figma file as real nodes. There's no
+  HTML or SwiftUI fallback. If Figma isn't connected, say so plainly and stop — don't improvise a
+  different output format to work around it.
 - **Sources only from Mobbin, not an arbitrary screenshot the person hands you.** If someone
   attaches their own screenshot and asks to restyle it, say plainly that this skill searches
   Mobbin rather than working from arbitrary uploaded images, and offer to find the same or a
@@ -23,12 +28,10 @@ Two boundaries worth being explicit about, since both come up in practice:
 
 ## Step 0 — Gather the request interactively, if it isn't already complete
 
-Four things are always needed before anything else can happen, gathered in this order:
-**platform**, **what to search for**, **what to restyle it into**, and **what format the output
-should take**. If the user's message already names all four clearly (e.g. "pull Stripe's web
-checkout, restyle in Airbnb's style, and write it to Figma"), skip straight to Step 1 — don't
-interrupt someone who already gave you everything. Ask about only whatever's actually missing;
-don't re-ask something already answered.
+Three things are always needed before anything else can happen: **what pattern to search for**,
+**what to restyle it into**, and **which Figma file to write into**. If the user's message already
+names all three clearly, skip straight to Step 1 — don't interrupt someone who already gave you
+everything. Ask about only whatever's actually missing; don't re-ask something already answered.
 
 Ask what's missing before searching, using `AskUserQuestion` rather than one open-ended "what do
 you want?" prompt — but be honest about that tool's shape: it supports at most 4 clickable options
@@ -36,32 +39,23 @@ per question, so it cannot present a full list as chips once there are more than
 Don't fake a dropdown that doesn't fit; when a list is long, say the full list in plain text in the
 same turn and let the person type the one they want (the tool's free-text option handles this).
 
-1. **Platform: web or app (iOS)** (if not already given). Ask this *first*, before anything else —
-   it determines which Mobbin tools are even valid (web unlocks `search_flows`, `search_screens`,
-   and `search_sections`; app only unlocks `search_flows`/`search_screens` with `platform: "ios"` —
-   there's no app equivalent of a page "section") and which output formats make sense (see question
-   4). Deciding this last, after already searching or after the person has committed to an output
-   format, is how a mismatch like "restyle this web flow as SwiftUI" happens — a real gap-flag case
-   discovered in testing, not a hypothetical one. Locking platform in first prevents it structurally
-   instead of relying on a warning after the fact.
-2. **What pattern to search for** (if not already given). This is **one question with concrete
+1. **What pattern to search for** (if not already given). This is **one question with concrete
    pattern examples as its clickable options** — never an abstract meta-question about granularity
-   itself (never present "a whole flow" / "a single screen" / "a page section" as the options; those
-   are internal categories for *you* to reason with, not chip labels to show the person). Pick 3-4
-   real, established patterns for the chosen platform as the actual option text — checkout,
-   onboarding, sign-up, adding to cart, empty states, notification settings, or (web only) a page
-   section like a pricing table — whichever are most relevant to what's already been said, plus
-   "something else" for free text. These match the action tags Mobbin's own results already carry
-   (like "Purchasing & Ordering" or "Adding to Cart & Bag"). Whichever one is picked, the sweet spot
-   is pulling how *several different brands* solve that same pattern and restyling all of them into
-   one target so they can be compared side by side — that's the default to lead with, not an
-   opt-in, and it's true regardless of whether the pattern picked is flow-, screen-, or
-   section-shaped, so don't surface that shape distinction as a decision the person has to make.
-   **Never offer "one specific screen from one named app" as a clickable option** — it's the
-   narrower case (fetching one specific screen just to reskin it is a smaller ask than the
-   multi-brand comparison this tool is actually built for), reachable only if someone types it
-   themselves via free text, never suggested. Once you know the chosen pattern, its shape (flow vs.
-   screen vs. section) is Step 3's granularity signal — reasoned internally, never asked.
+   itself (never present "a whole flow" / "a single screen" as the options; those are internal
+   categories for *you* to reason with, not chip labels to show the person). Pick 3-4 real,
+   established iOS patterns as the actual option text — checkout, onboarding, sign-up, adding to
+   cart, empty states, notification settings — whichever are most relevant to what's already been
+   said, plus "something else" for free text. These match the action tags Mobbin's own results
+   already carry (like "Purchasing & Ordering" or "Adding to Cart & Bag"). Whichever one is picked,
+   the sweet spot is pulling how *several different apps* solve that same pattern and restyling all
+   of them into one target so they can be compared side by side — that's the default to lead with,
+   not an opt-in, and it's true regardless of whether the pattern picked is flow- or screen-shaped,
+   so don't surface that shape distinction as a decision the person has to make. **Never offer "one
+   specific screen from one named app" as a clickable option** — it's the narrower case (fetching
+   one specific screen just to reskin it is a smaller ask than the multi-brand comparison this tool
+   is actually built for), reachable only if someone types it themselves via free text, never
+   suggested. Once you know the chosen pattern, its shape (flow vs. screen) is Step 3's granularity
+   signal — reasoned internally, never asked.
 
    **Optionally, also offer to narrow by app category**, using Mobbin's own real category taxonomy
    (as browsable on mobbin.com itself, under Categories) — AI, Business, Collaboration,
@@ -71,126 +65,91 @@ same turn and let the person type the one they want (the tool's free-text option
    Networking, Sports, Travel & Transportation, Utilities — rather than an invented approximation,
    alongside "search broadly, no category filter" as the default/first option. Be upfront about what
    this actually does: this category list is real on Mobbin's own site, but the
-   `search_flows`/`search_screens`/`search_sections` MCP tools available here have **no category or
-   industry filter parameter** — only a free-text `query`, a `platform`, and pagination. A category
-   choice here gets folded into the natural-language query itself (e.g., "checkout flow for Finance
-   category apps" or naming a couple of representative apps from that category) rather than applied
-   as a structural filter, so it narrows results in practice but isn't a guarantee. After searching,
-   sanity-check that what came back is actually in the requested
-   category — if Mobbin returns something clearly outside it, drop it from the varied set rather
-   than forcing the count, and say so rather than silently including an off-category result.
-3. **What to restyle it into** (if not already given). There are two separate pools, and which one
-   to search depends on the platform from question 1:
-   - **Web** → `design.md/*.md` (flat files, one per brand, website-derived).
-   - **App (iOS)** → `design.md/ios-apps/<category>/<app>/DESIGN.md` — 200 native iOS app design
-     systems (Coinbase, Binance, Robinhood, Spotify, Airbnb, and 195 more, organized by category:
-     finance, social, messaging, travel, music, fitness, productivity, dating, food, video, misc).
-     These document the brand's *actual app*, not its website — check here first whenever platform
-     is "app" and only fall back to the website file (with the mismatch caveat below) if the brand
-     genuinely isn't in this set. `design.md/ios-apps/ATTRIBUTION.md` credits the source.
-   List real options as plain text if there are more than ~3, since the chip limit won't fit them —
-   plus an option for "my own system" (routes into Step 1's no-matching-file handling). Don't
-   hardcode brand names in this skill file itself; both reference sets grow, so read the directory
-   fresh each time rather than trusting a list written down here. **If platform is "app" and the
-   requested brand only exists in the website pool** (not in `design.md/ios-apps/`), say so
-   plainly before proceeding — that's still the mismatch case (website tokens applied to a mobile
-   screen, not the brand's real app language), just narrower now that a real native-app pool exists
-   for many brands.
-4. **What format the output should be** (if not already given). Only offer formats that fit the
-   platform locked in at question 1 — don't present an option you'd immediately have to flag as a
-   mismatch:
-   - **Web** → **Figma** (the default; ask for the target file's URL if none has been mentioned in
-     this conversation) or **HTML** (a real file you can open immediately).
-   - **App (iOS)** → **Figma** (same as above) or **SwiftUI code** (ask whether it should be a
-     standalone file or land in an existing iOS repo/path — see Step 5 for what this can and can't
-     do; "Simulator" itself is never an option here, since this skill can't open or produce it).
-     **Also ask which device size to design for** — iOS-only, and last, since it's really a detail
-     of *this* output rather than a new top-level question: it sets the Figma frame width/height,
-     the SwiftUI `#Preview`'s `.previewDevice(...)`, and the companion HTML's width (Step 5).
-     Guessing wrong means redoing layout math after the fact, so use real point widths, not vague
-     labels:
-     - iPhone 17 (default if the person has no preference) — 393×852
-     - iPhone 17 Pro Max — 440×956
-     - iPhone SE (3rd gen, the current smallest iPhone) — 375×667
-     - iPad — **flag before proceeding, don't just build it**: Mobbin's iOS screens are phone-shaped
-       (roughly 9:19.5), not tablet-shaped, so there's no real source layout to restyle *for* an
-       iPad — only a phone screenshot scaled or centered onto a much wider canvas, which is a
-       fundamentally different design problem (real iPad layouts add columns/sidebars, they don't
-       just stretch). Say this plainly and offer the actual choice: center the phone-width content
-       on an iPad-sized canvas (honestly labeled as unstretched phone content, not a tablet
-       redesign), or pick a phone size instead. Only proceed past this once the person has chosen,
-       don't default silently either way.
-     - Custom dimensions — take the person's exact numbers as given.
-
-If someone explicitly insists on a cross-platform combination anyway (e.g. genuinely wants a web
-flow reimagined for iOS, on purpose) — honor it, since forcing platform-appropriate options is about
-avoiding an *accidental* mismatch, not blocking a deliberate one — but flag the reinterpretation
-explicitly in the handoff exactly like an unmatched component from Step 4: it's the same category
-of "improvised, not documented" call, just at the platform level instead of the component level.
+   `search_flows`/`search_screens` MCP tools available here have **no category or industry filter
+   parameter** — only a free-text `query`, a `platform`, and pagination. A category choice here gets
+   folded into the natural-language query itself (e.g., "checkout flow for Finance category apps" or
+   naming a couple of representative apps from that category) rather than applied as a structural
+   filter, so it narrows results in practice but isn't a guarantee. After searching, sanity-check
+   that what came back is actually in the requested category — if Mobbin returns something clearly
+   outside it, drop it from the varied set rather than forcing the count, and say so rather than
+   silently including an off-category result.
+2. **What to restyle it into** (if not already given). `design.md/ios-apps/<category>/<app>/
+   DESIGN.md` — 200 native iOS app design systems (Coinbase, Binance, Robinhood, Spotify, Airbnb,
+   Duolingo, and 195 more, organized by category: finance, social, messaging, travel, music,
+   fitness, productivity, dating, food, video, misc). These document the brand's *actual app*, not
+   its website. `design.md/ios-apps/ATTRIBUTION.md` credits the source. List real options as plain
+   text if there are more than ~3, since the chip limit won't fit them — plus an option for "my own
+   system" (routes into Step 1's no-matching-file handling). Don't hardcode brand names in this
+   skill file itself; the reference set grows, so read the directory fresh each time rather than
+   trusting a list written down here.
+3. **Which Figma file to write into** (if not already given). Ask for the file's URL or key if
+   none has been mentioned in this conversation — never assume or reuse a file from a previous,
+   unrelated task. This also carries the device-size detail: it sets the Figma frame's
+   width/height, so guessing wrong means redoing layout math after the fact. Use real point widths,
+   not vague labels:
+   - iPhone 17 (default if the person has no preference) — 393×852
+   - iPhone 17 Pro Max — 440×956
+   - iPhone SE (3rd gen, the current smallest iPhone) — 375×667
+   - iPad — **flag before proceeding, don't just build it**: Mobbin's iOS screens are phone-shaped
+     (roughly 9:19.5), not tablet-shaped, so there's no real source layout to restyle *for* an
+     iPad — only a phone screenshot scaled or centered onto a much wider canvas, which is a
+     fundamentally different design problem (real iPad layouts add columns/sidebars, they don't
+     just stretch). Say this plainly and offer the actual choice: center the phone-width content on
+     an iPad-sized frame (honestly labeled as unstretched phone content, not a tablet redesign), or
+     pick a phone size instead. Only proceed past this once the person has chosen, don't default
+     silently either way.
+   - Custom dimensions — take the person's exact numbers as given.
 
 Combine what's missing into as few `AskUserQuestion` calls as possible — one call can carry multiple
-questions, so don't spread four questions across four round-trips when one or two calls handle it.
+questions, so don't spread three questions across three round-trips when one call handles it.
 
 The reasoning: Step 1 already refuses to silently substitute a stand-in design system when the
-user's own doesn't exist, a wrong guess at search granularity means a wasted Mobbin call, and a
-wrong guess at output format means redoing the entire build in a different medium. A short upfront
+user's own doesn't exist, a wrong guess at search granularity means a wasted Mobbin call, and
+building against the wrong Figma file means undoing work in the wrong place. A short upfront
 question is cheaper than discovering any of those mismatches after the fact — but only when the
 request actually leaves something open. A fully-specified request deserves to be run immediately,
 not gated behind a checklist for its own sake. There's no separate "preview, then approve, then
-output" stage beyond this — for Figma, the incremental build-and-screenshot in Step 5 already *is*
-the live preview (small steps, visible as they happen, trivially undoable); for HTML/SwiftUI, the
-file itself is the deliverable, so the only thing that must happen after generating it is actually
-surfacing it to the person rather than leaving it silent in the repo (see Step 5).
+output" stage beyond this — the incremental build-and-screenshot in Step 5 already *is* the live
+preview (small steps, visible as they happen, trivially undoable).
 
 ## Step 1 — Resolve the target design system
 
-The user names a target either as "our/my system" (their own) or a specific brand ("Coinbase's
-style", "Apple's style") — or, per Step 0, picks one from a presented list. Resolve it to one file:
-`design.md/<brand>-DESIGN.md` for web, or `design.md/ios-apps/<category>/<app>/DESIGN.md`
-for app — whichever pool matches the platform from Step 0.
+The user names a target either as "our/my system" (their own) or a specific app ("Coinbase's
+style", "Duolingo's style") — or, per Step 0, picks one from a presented list. Resolve it to one
+file: `design.md/ios-apps/<category>/<app>/DESIGN.md`.
 
-- If the named target — "our/my system" *or* a specific brand ("Google's style", "Material 3") —
-  has no matching file in either pool, say so explicitly before proceeding — do not silently
-  substitute a different brand's file as a stand-in, and don't fall back on general knowledge of
-  what that brand's style looks like instead of a real, documented file. Ask which file to use
-  instead, whether to treat this as a test run against an existing reference file, or whether the
-  person wants to supply their own file for it.
-- Multiple targets in one request (e.g. "show me it in both Coinbase's and Apple's style") means
+- If the named target — "our/my system" *or* a specific app — has no matching file in the pool,
+  say so explicitly before proceeding — do not silently substitute a different app's file as a
+  stand-in, and don't fall back on general knowledge of what that app's style looks like instead of
+  a real, documented file. Ask which file to use instead, whether to treat this as a test run
+  against an existing reference file, or whether the person wants to supply their own file for it.
+- Multiple targets in one request (e.g. "show me it in both Coinbase's and Duolingo's style") means
   running Steps 3–5 once per target file, in parallel where the outputs don't depend on each other.
 
 ## Step 2 — Parse the target file rigorously, not by eye
 
 Read the whole file. Do not approximate — every value used downstream must trace back to a
-specific line in the file. Target files come in two schemas; both demand the same rigor, just
-extracted from different places:
+specific line in the file. Target files are prose-only (copied as-is from their source repo): no
+YAML block — values live in the prose and in markdown tables under numbered sections (Color
+Palette & Roles, Typography Rules' Hierarchy table, Component Stylings). Pull from the specific
+table row or bullet, the same way you'd pull from a structured key — "the Hierarchy table's
+'Portfolio Hero' row says 40pt / weight 700 / -0.5pt tracking" is exactly as rigorous as reading a
+token from a schema, it's just prose instead of YAML. Never let the lack of YAML become an excuse
+to eyeball a value that's actually written down explicitly a few lines away. (If someone supplies
+their own file in a different format, apply the same rigor to whatever structure it actually uses.)
 
-- **YAML-tokenized files** (every `design.md/*.md` web file, plus a few hand-converted ones):
-  values live in a `colors:`/`typography:`/`rounded:`/`spacing:`/`components:` front-matter block.
-  Pull from those keys directly.
-- **Prose-only files** (every `design.md/ios-apps/` file, copied as-is from their source repo):
-  no YAML block — values live in the prose and in markdown tables under numbered sections (Color
-  Palette & Roles, Typography Rules' Hierarchy table, Component Stylings). Pull from the specific
-  table row or bullet, the same way you'd pull from a YAML key — "the Hierarchy table's 'Portfolio
-  Hero' row says 40pt / weight 700 / -0.5pt tracking" is exactly as rigorous as reading a
-  `typography:` key, it's just prose instead of YAML. Never let the lack of YAML become an excuse
-  to eyeball a value that's actually written down explicitly a few lines away.
-
-Either way:
-
-- **Colors**: pull the exact hex (from `colors:` or from inline code spans like `` `#0052FF` `` in
-  prose). Convert to Figma's 0–1 range by dividing by 255 — never eyeball an RGB value.
+- **Colors**: pull the exact hex from inline code spans like `` `#0052FF` `` in prose. Convert to
+  Figma's 0–1 range by dividing by 255 — never eyeball an RGB value.
 - **Typography**: for each text role used, pull the exact size, weight, line height, and letter
-  spacing (from `typography:` or from the Hierarchy table's matching row). Match the *closest*
-  documented token/row to the role you're building — state which one you picked and why if it's
-  not obvious.
+  spacing from the Hierarchy table's matching row. Match the *closest* documented row to the role
+  you're building — state which one you picked and why if it's not obvious.
 - **Font substitution**: this has two distinct cases — don't conflate them.
-  - **The font is proprietary/licensed** (most brand display faces): check the file's "Note on Font
-    Substitutes" section (or, in prose files, the "Google Fonts substitute" bullet under Typography
-    Rules) for the documented fallback and apply it *exactly*, including any letter-spacing or
-    line-height adjustment it specifies. Never pick a substitute font freehand — and **always say
-    in the handoff** which substitute was used in place of which real font and why, even when it's
-    the file's own documented choice. Don't let a silent substitution read as if it were the real
-    brand typeface.
+  - **The font is proprietary/licensed** (most brand display faces): check the file's "Google Fonts
+    substitute" bullet under Typography Rules for the documented fallback and apply it *exactly*,
+    including any letter-spacing or line-height adjustment it specifies. Never pick a substitute
+    font freehand — and **always say in the handoff** which substitute was used in place of which
+    real font and why, even when it's the file's own documented choice. Don't let a silent
+    substitution read as if it were the real brand typeface.
   - **The font is legitimately obtainable but just isn't loaded in this Figma file right now** (an
     open font like Inter or a real system font like SF Pro Rounded that happens not to be in this
     session's font list): check with `listAvailableFontsAsync` before assuming. If it's missing,
@@ -199,28 +158,25 @@ Either way:
     and retry, or (b) have you pick the closest available substitute now. Only proceed once they've
     chosen, since silently downgrading a font that was actually available to the person, just not
     loaded yet, throws away accuracy they could have had for free.
-- **Spacing & radius**: pull gaps and padding from `spacing:`/`rounded:`, or from the Layout
-  Principles / Shapes sections in prose files. If a needed gap isn't represented anywhere, pick the
-  nearest documented one and say so — don't invent an arbitrary pixel value.
-- **Components**: check `components:` (or the Component Stylings section in prose files) for a
-  named entry matching what you're building. Prefer reusing a documented component's full spec over
-  assembling primitives by hand. For an app target with a matching `DESIGN-swiftui.md`, that file's
-  `Color`/`Font` extensions and sample views are the real, author-written implementation — read it
-  before improvising your own SwiftUI patterns in Step 5.
+- **Spacing & radius**: pull gaps and padding from the Layout Principles / Shapes sections. If a
+  needed gap isn't represented anywhere, pick the nearest documented one and say so — don't invent
+  an arbitrary pixel value.
+- **Components**: check the Component Stylings section for a named entry matching what you're
+  building. Prefer reusing a documented component's full spec over assembling primitives by hand.
+  Also check the Figma file itself for an existing component that already matches — reusing a real
+  instance beats rebuilding one from scratch.
 
 ## Step 3 — Search Mobbin
 
-Match search granularity to the ask:
+Match search granularity to the ask, always with `platform: "ios"`:
 - A whole user journey → `search_flows`
-- One screen or a named app's specific screen → `search_screens` (name the app in the query to
-  filter to it, e.g. "Stripe checkout screen")
-- A page pattern/component (pricing table, empty state, stat card) → `search_sections` (web) or
-  `search_screens` with a tight query (mobile) — sections tend to match "designing one feature"
-  better than a full flow.
+- One screen, a tightly-scoped feature (empty state, notification settings), or a named app's
+  specific screen → `search_screens` (name the app in the query to filter to it, e.g. "Coinbase
+  notification settings screen")
 
-**Default to a multi-brand set, not a single result.** Unless the request names one specific app
-(e.g. "Stripe's checkout screen"), the point of this skill is comparing how several different
-brands solve the same pattern and restyling all of them into one target — that comparison is the
+**Default to a multi-app set, not a single result.** Unless the request names one specific app
+(e.g. "Coinbase's checkout screen"), the point of this skill is comparing how several different
+apps solve the same pattern and restyling all of them into one target — that comparison is the
 default behavior, not something that only happens when the person explicitly asks for "a few" or
 "the best ones." When Mobbin returns results from multiple source apps, pick a small, genuinely
 varied set (different source apps, not near-duplicates of the same app) and restyle each one — say
@@ -229,118 +185,34 @@ when the request named one specific app, or when Mobbin genuinely only returned 
 
 ## Step 4 — Match content to the target's real component vocabulary
 
-For each source screen, before restyling: does the target file's `components:` block have
+For each source screen, before restyling: does the target file's Component Stylings section have
 anything that matches this pattern?
 
 - **Yes** → follow that component's spec exactly (radius, padding, color roles, typography token).
-- **No** → this is the gap case from prior testing (e.g. Airbnb's tokens have no pricing-tier
+- **No** → this is the gap case from prior testing (e.g. a gamified app's tokens have no commerce
   component). Improvise the closest reasonable adaptation, but **flag it explicitly** in the
   handoff — name what was borrowed from an unrelated pattern and why. Never let an improvised
   match read with the same confidence as a documented one.
 
-## Step 5 — Output
+## Step 5 — Output (Figma only)
 
-Figma is the default output whenever it's connected, regardless of the source pattern's platform —
-it's a canvas, not code, so it fits a mobile-sourced pattern just as well as a web-sourced one.
-"Simulator" is never something to promise as an output format itself — a Claude Code sandbox cannot
-open or run Simulator (see the SwiftUI note below); it's only ever something the *person* opens
-locally, afterward, with a file this skill handed them.
+**If Figma isn't connected, say so plainly and stop.** There is no code fallback — don't reach for
+HTML or SwiftUI to work around a missing Figma connection, since that's a different deliverable
+than what was asked for, not a substitute for it.
 
-- **Figma connected**: first make sure you know which file to write into — use a file URL/key the
-  person already gave in this conversation, or ask for one (per Step 0) rather than assuming or
-  reusing a file from a previous, unrelated task. Then load the `figma-use` skill (mandatory
-  prerequisite for `use_figma`) and build real nodes — auto-layout frames, text with the exact
-  font/size/weight/letter-spacing from Step 2, fills bound to the exact hex, corner radii from
-  `rounded:`. Work incrementally per the `figma-use` rules (small steps, screenshot to verify,
-  return created node IDs). Position new top-level frames away from existing content on the page.
-  The incremental screenshots as you build **are** the preview — there's no separate approval gate
-  before this counts as "done."
-
-Reach for platform-matched code instead when Figma isn't connected, or when the user explicitly
-wants a shippable file rather than a design canvas ("give me the code", "write it as a component").
-Match the format to the *source* pattern's platform from Step 3 — a pattern found via `search_flows`
-or `search_screens(platform: "web")` or `search_sections` is web-sourced; `search_screens(platform:
-"ios")` is mobile-sourced. Don't default everything to one format regardless of where it came from.
-
-- **Web-sourced**: don't draw a *picture* of a browser — the person's real browser already provides
-  real chrome the moment they open the file, so an illustrated mockup frame around the content is
-  redundant at best and misleading at worst (an early version of this file used a narrow phone-card
-  shape for genuinely web-sourced content, which read as "a mobile app in a browser" instead of an
-  actual webpage — the fix wasn't a better-drawn frame, it was removing the fake frame entirely).
-  Each restyled screen should be a real, full-bleed HTML page at real width — inline CSS, no
-  external build step, no illustrated chrome — that genuinely looks like the target's own site at
-  that breakpoint when opened.
-  - **Single source**: one such page is the whole deliverable — save it under `explorations/`.
-  - **Multi-brand comparison (the default)**: save a small folder under `explorations/<name>/` — see
-    `explorations/signup-flows-linear/` for the established structure: one real full-bleed page per
-    source app (`jira.html`, `perplexity.html`, ...), each with a small unobtrusive "← Back to
-    comparison" link, plus an `index.html` contents page carrying the header block (Mobbin source
-    citations, target token file, gap-flag notes) and a live thumbnail per page that links to it.
-    Build thumbnails with a scaled, non-interactive `<iframe>` of the real page (`transform: scale();
-    pointer-events: none`) inside a fixed-size clipping wrapper, so the thumbnail is never a
-    hand-duplicated summary that can drift out of sync with the real page. **Don't nest an `<a>`
-    inside another `<a>`** (e.g. a "View source on Mobbin" link inside the thumbnail's link to the
-    full page) — it's invalid HTML that makes the browser silently auto-close the outer anchor
-    early, scrambling the layout in a way that's confusing to debug from the rendered result alone;
-    put the citation link as a sibling next to the thumbnail link, not inside it.
-  This path is fully verifiable in a Claude Code sandbox (render every page — index and each full
-  page — with a headless browser before handing it off) — do that, don't just write the HTML and
-  assume it's correct. Once it's verified,
-  **surface it to the person directly** (open it as a rendered preview, or send the file) rather
-  than leaving it sitting silently in the repo — generating the file isn't the finish line, them
-  actually seeing it is. Tell them the exact path to the `index.html` (or the single page, for a
-  single-source result) and that opening it in any browser — no server, no build step — is all it
-  takes to click through it themselves. **For a multi-brand comparison, `index.html` is not
-  self-contained** — its thumbnails are `<iframe>`s pointing at the sibling pages by relative path,
-  so sending only `index.html` (e.g. as a standalone download) leaves every thumbnail broken once
-  it's no longer sitting next to those siblings on disk. Send or surface the whole folder together,
-  not just the index page alone.
-- **Mobile-sourced (iOS)**: a single SwiftUI view file — saved under `explorations/swiftui/` for a
-  standalone file, or at the path the person specified if they're targeting an existing iOS repo
-  (per Step 0). See `explorations/swiftui/CoinbaseNotificationSettingsView.swift` for the established
-  format: a `Color` hex extension for exact token values, small reusable row/component views
-  instead of one giant body, and a `#Preview` block at the bottom so it drops straight into Xcode's
-  preview canvas. If the target came from `design.md/ios-apps/`, its `DESIGN-swiftui.md`
-  sibling file already has that brand's own `Color`/`Font` extensions and sample view patterns
-  written out — match those conventions instead of inventing a parallel structure. **Important
-  limitation**: a Claude Code sandbox has no Swift toolchain and no macOS, so this file cannot be
-  compiled, previewed, or verified from within the session — unlike the HTML path, this one ships
-  unverified. Say so explicitly in the handoff, send them the file directly, and walk them through
-  opening it: in Xcode, either open the file directly (it doesn't need to belong to a project to
-  see the `#Preview` canvas — File > Open, select the `.swift` file, then Editor > Canvas, or
-  Option+Cmd+Return, to render it), or drag it into an existing project's target if they want it
-  there permanently. **Flag this gotcha explicitly, don't wait for it to surface as a confusing
-  error**: opening a loose file this way makes Xcode default its ad-hoc scheme's run destination to
-  "My Mac", and any view using a UIKit-only type (`.keyboardType(...)`'s `UIKeyboardType`, for
-  example — likely in anything with a text field) fails to build there with a "cannot find type in
-  scope" error that reads like a real code bug but isn't one — macOS has no UIKit at all. Tell them
-  up front to switch the destination selector (next to the scheme name in the toolbar) from "My
-  Mac" to any iPhone Simulator before trusting a build error as real. Confirming it actually
-  compiles, on the right destination, is the one thing only Xcode itself can do — point them there
-  before they trust the result. When the target's typography needs a
-  licensed/substitute font, default the SwiftUI code to
-  `.system(...)` for guaranteed compilability, and note in the handoff that bundling the real
-  substitute font (adding the file to the Xcode target + `Info.plist`) is a manual step the person
-  still needs to do for pixel-exact type. Where the target's token schema improvised a component
-  Figma has no native primitive for (e.g. a toggle switch), check whether SwiftUI has a *real*
-  native equivalent first (e.g. `Toggle`) — native platform components are often available in code
-  even when they had to be hand-built from primitives in Figma, and using the real one is strictly
-  better than re-improvising.
-
-  **Also produce a real HTML preview, rendered at the exact device width chosen in Step 0** (e.g.
-  393px for iPhone 17, 375px for iPhone SE — see Step 0 question 4 for the full width table) — this
-  is the only way anyone, including you, can actually *see* the result before opening Xcode, since
-  the SwiftUI file itself is unverified and Simulator only runs on the person's own Mac. Same
-  principle as the web case: **no illustrated phone bezel, no notch graphic drawn in CSS** — just
-  the real content at the real device width, unstretched. Mobbin's source screens are already
-  phone-shaped at that same scale, so this maps directly rather than needing an invented frame.
-  Render it with a headless browser to verify before handing it off, exactly like the web HTML
-  path. For a multi-brand comparison, use the same folder structure as the web case (an
-  `index.html` with live iframe thumbnails linking to one real phone-width page per source app) —
-  the architecture doesn't change, only the page width does. **If iPad was chosen** (per Step 0's
-  flag), the content stays phone-width and is centered on the wider canvas exactly as agreed — never
-  silently stretch it to fill the extra space, that would fabricate a tablet layout that was never
-  actually designed.
+- First make sure you know which file to write into — use the file URL/key from Step 0 rather than
+  assuming or reusing a file from a previous, unrelated task. Then load the `figma-use` skill
+  (mandatory prerequisite for `use_figma`) and build real nodes — auto-layout frames sized to the
+  device dimensions from Step 0, text with the exact font/size/weight/letter-spacing from Step 2,
+  fills bound to the exact hex, corner radii from the Shapes section. Work incrementally per the
+  `figma-use` rules (small steps, screenshot to verify, return created node IDs). Position new
+  top-level frames away from existing content on the page.
+- **If iPad was chosen** (per Step 0's flag), the content stays phone-width and is centered on the
+  wider frame exactly as agreed — never silently stretch it to fill the extra space, that would
+  fabricate a tablet layout that was never actually designed.
+- The incremental screenshots as you build **are** the preview — there's no separate approval gate
+  before this counts as "done." Once every screen is built, say so explicitly and point to the
+  frames by name/location rather than leaving the person to go find them.
 
 ## Handoff notes (always include)
 
