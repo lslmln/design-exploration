@@ -32,6 +32,9 @@ Three things are always needed before anything else can happen: **what pattern t
 **what to restyle it into**, and **which Figma file to write into**. If the user's message already
 names all three clearly, skip straight to Step 1 — don't interrupt someone who already gave you
 everything. Ask about only whatever's actually missing; don't re-ask something already answered.
+Alongside the first of those three, there's a fourth standing question — **whether to narrow by app
+category** (see 1a below) — that's always asked too, even though its answer safely defaults to "no
+category" and never blocks proceeding the way the other three can.
 
 Ask what's missing before searching, using `AskUserQuestion` rather than one open-ended "what do
 you want?" prompt — but be honest about that tool's shape: it supports at most 4 clickable options
@@ -57,22 +60,29 @@ same turn and let the person type the one they want (the tool's free-text option
    suggested. Once you know the chosen pattern, its shape (flow vs. screen) is Step 3's granularity
    signal — reasoned internally, never asked.
 
-   **Optionally, also offer to narrow by app category**, using Mobbin's own real category taxonomy
-   (as browsable on mobbin.com itself, under Categories) — AI, Business, Collaboration,
-   Communication, CRM, Developer Tools, Education, Entertainment, Finance, Food & Drink, Graphics &
-   Design, Health & Fitness, Jobs & Recruitment, Lifestyle, Medical, Music & Audio, Maps &
-   Navigation, News, Photo & Video, Productivity, Real Estate, Reference, Shopping, Social
-   Networking, Sports, Travel & Transportation, Utilities — rather than an invented approximation,
-   alongside "search broadly, no category filter" as the default/first option. Be upfront about what
-   this actually does: this category list is real on Mobbin's own site, but the
-   `search_flows`/`search_screens` MCP tools available here have **no category or industry filter
-   parameter** — only a free-text `query`, a `platform`, and pagination. A category choice here gets
-   folded into the natural-language query itself (e.g., "checkout flow for Finance category apps" or
-   naming a couple of representative apps from that category) rather than applied as a structural
-   filter, so it narrows results in practice but isn't a guarantee. After searching, sanity-check
-   that what came back is actually in the requested category — if Mobbin returns something clearly
-   outside it, drop it from the varied set rather than forcing the count, and say so rather than
-   silently including an off-category result.
+1a. **Always also ask whether to narrow by app category** — this is a standing question, not a
+   judgment call about whether to bother asking it. Pair it with the pattern question above (one
+   `AskUserQuestion` call can carry both). Use Mobbin's own real category taxonomy (as browsable on
+   mobbin.com itself, under Categories) — AI, Business, Collaboration, Communication, CRM, Developer
+   Tools, Education, Entertainment, Finance, Food & Drink, Graphics & Design, Health & Fitness, Jobs
+   & Recruitment, Lifestyle, Medical, Music & Audio, Maps & Navigation, News, Photo & Video,
+   Productivity, Real Estate, Reference, Shopping, Social Networking, Sports, Travel &
+   Transportation, Utilities — never an invented approximation. **"No category — search broadly" is
+   always the first/default option**, since most requests don't need narrowing; say the rest of the
+   real category list as plain text in the same turn (it's too long for the 4-option chip limit) and
+   let the person type the one they want. Skipping this question is not a valid shortcut even when a
+   category seems obvious from context (e.g. "Coinbase's checkout" doesn't imply "Finance category
+   only" — ask anyway, since the person may want the broader comparison instead).
+
+   Be upfront about what a category choice actually does: this category list is real on Mobbin's own
+   site, but the `search_flows`/`search_screens` MCP tools available here have **no category or
+   industry filter parameter** — only a free-text `query`, a `platform`, and pagination. A category
+   choice here gets folded into the natural-language query itself (e.g., "checkout flow for Finance
+   category apps" or naming a couple of representative apps from that category) rather than applied
+   as a structural filter, so it narrows results in practice but isn't a guarantee. After searching,
+   sanity-check that what came back is actually in the requested category — if Mobbin returns
+   something clearly outside it, drop it from the varied set rather than forcing the count, and say
+   so rather than silently including an off-category result.
 2. **What to restyle it into** (if not already given). `design.md/ios-apps/<category>/<app>/
    DESIGN.md` — 200 native iOS app design systems (Coinbase, Binance, Robinhood, Spotify, Airbnb,
    Duolingo, and 195 more, organized by category: finance, social, messaging, travel, music,

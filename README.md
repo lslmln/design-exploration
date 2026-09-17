@@ -19,14 +19,23 @@ session.
 Scoped deliberately narrow for now: **iOS apps only, Figma only.** No web patterns, no HTML or
 SwiftUI output — just Mobbin's iOS app screens restyled straight into a Figma file.
 
-It asks you three questions before it starts:
-1. **Pattern** — a flow or screen, optionally narrowed by app category.
+It asks a few questions before it starts:
+1. **Pattern** — a flow or screen, plus whether to narrow by app category (default: no, search
+   broadly — this is always asked, not just offered when it seems relevant).
 2. **Target** — which of the 200 bundled native iOS app design systems to restyle into.
-3. **Figma file** — which file to write into, plus a device size.
+3. **Figma file and page** — which file, and which specific page inside it, to write into, plus a
+   device size.
 
 A couple of tips:
 - **Ask for a pattern or flow, not a single screen.** The search works best when the goal is
-  pulling a bunch of screens across several apps — not just one app, not just one screen — so
-  there's a whole set to restyle and compare.
+  pulling how several apps solve the same pattern — not just one app, not just one screen — so
+  there's a set to restyle and compare. When the pattern is a flow, the default is a tight 3-5 key
+  screens per app (entry, core steps, confirmation) — not every screen in the flow. Say so if you
+  want the full flow instead.
 - **No design system of your own yet? Use one of the bundled ones.** `design.md/ios-apps/` has
   200 real native iOS app systems (Coinbase's actual app, not just its site) to pick from.
+- **Every restyled screen is grounded in a real screenshot it actually looked at** — the skill
+  won't fill in a step from general knowledge of what an app "usually" looks like. If a wanted
+  step wasn't found on Mobbin, it gets dropped rather than invented.
+- **The handoff pairs each restyled screen with both its Figma link and its original Mobbin
+  source link**, so you can open both and compare side by side.
