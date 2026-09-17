@@ -194,13 +194,19 @@ turns up for it after that, drop the step entirely — never fill the gap with a
 cite the flow's link next to it, since that makes a fabricated screen look exactly as verified as a
 real one (a real bug caught in testing, not a hypothetical).
 
-**When a flow has many screens, don't try to restyle all of them — pick the ones that represent the
-pattern actually asked for.** A full onboarding or account-creation journey on Mobbin can run
-12-16 screens deep, most of it incidental (permission prompts, loading states) to what someone
-actually wants to see. Identify the 1-3 screens that most directly represent the pattern itself
-(e.g. for "sign-up," that's the account-creation screen itself, not every step before or after it)
-and verify and restyle those, rather than mechanically working through every screen in the flow.
-Say which screens you picked and why if it's not obvious.
+**When a flow has many screens, look at all of them first, then pick the ones that represent the
+pattern actually asked for — don't restyle all of them.** A full onboarding or account-creation
+journey on Mobbin can run 12-16 screens deep, and `search_flows` gives you a preview image for
+each one up front — look at every one of those before deciding what matters, don't judge from
+screen names or position alone. Most of a long flow is incidental to what someone actually wants
+to see: permission prompts, splash/loading states, generic tutorial carousels, and success/
+confirmation screens that don't carry the pattern's actual UI. A screen counts as "key" when it's
+where the pattern's core interaction actually happens — the form being filled in, the decision
+being made, the content being reviewed. For "sign-up," that's the account-creation screen itself,
+not the splash screen before it or the "you're in!" confirmation after it. Identify the 1-3 screens
+that meet that bar, verify each one's actual image (per the rule above), and restyle those, rather
+than mechanically working through every screen in the flow. Say which screens you picked and why
+if it's not obvious.
 
 ## Step 4 — Match content to the target's real component vocabulary
 
