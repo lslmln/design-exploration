@@ -290,7 +290,11 @@ or `search_screens(platform: "web")` or `search_sections` is web-sourced; `searc
   than leaving it sitting silently in the repo — generating the file isn't the finish line, them
   actually seeing it is. Tell them the exact path to the `index.html` (or the single page, for a
   single-source result) and that opening it in any browser — no server, no build step — is all it
-  takes to click through it themselves.
+  takes to click through it themselves. **For a multi-brand comparison, `index.html` is not
+  self-contained** — its thumbnails are `<iframe>`s pointing at the sibling pages by relative path,
+  so sending only `index.html` (e.g. as a standalone download) leaves every thumbnail broken once
+  it's no longer sitting next to those siblings on disk. Send or surface the whole folder together,
+  not just the index page alone.
 - **Mobile-sourced (iOS)**: a single SwiftUI view file — saved under `explorations/swiftui/` for a
   standalone file, or at the path the person specified if they're targeting an existing iOS repo
   (per Step 0). See `explorations/swiftui/CoinbaseNotificationSettingsView.swift` for the established
@@ -305,8 +309,15 @@ or `search_screens(platform: "web")` or `search_sections` is web-sourced; `searc
   opening it: in Xcode, either open the file directly (it doesn't need to belong to a project to
   see the `#Preview` canvas — File > Open, select the `.swift` file, then Editor > Canvas, or
   Option+Cmd+Return, to render it), or drag it into an existing project's target if they want it
-  there permanently. Confirming it actually compiles is the one thing only Xcode itself can do —
-  point them there before they trust the result. When the target's typography needs a
+  there permanently. **Flag this gotcha explicitly, don't wait for it to surface as a confusing
+  error**: opening a loose file this way makes Xcode default its ad-hoc scheme's run destination to
+  "My Mac", and any view using a UIKit-only type (`.keyboardType(...)`'s `UIKeyboardType`, for
+  example — likely in anything with a text field) fails to build there with a "cannot find type in
+  scope" error that reads like a real code bug but isn't one — macOS has no UIKit at all. Tell them
+  up front to switch the destination selector (next to the scheme name in the toolbar) from "My
+  Mac" to any iPhone Simulator before trusting a build error as real. Confirming it actually
+  compiles, on the right destination, is the one thing only Xcode itself can do — point them there
+  before they trust the result. When the target's typography needs a
   licensed/substitute font, default the SwiftUI code to
   `.system(...)` for guaranteed compilability, and note in the handoff that bundling the real
   substitute font (adding the file to the Xcode target + `Info.plist`) is a manual step the person
