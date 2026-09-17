@@ -87,8 +87,9 @@ same turn and let the person type the one they want (the tool's free-text option
    unrelated task. This also carries the device-size detail: it sets the Figma frame's
    width/height, so guessing wrong means redoing layout math after the fact. Use real point widths,
    not vague labels:
-   - iPhone 17 (default if the person has no preference) — 393×852
-   - iPhone 17 Pro Max — 440×956
+   - iPhone 17 (default if the person has no preference) — 402×874
+   - iPhone 16 — 393×852 (a real, distinct size from the iPhone 17 default — don't conflate them)
+   - iPhone 16 Pro Max / 17 Pro Max — 440×956
    - iPhone SE (3rd gen, the current smallest iPhone) — 375×667
    - iPad — **flag before proceeding, don't just build it**: Mobbin's iOS screens are phone-shaped
      (roughly 9:19.5), not tablet-shaped, so there's no real source layout to restyle *for* an
