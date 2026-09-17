@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Continue with — restyled into Spotify</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --canvas: #121212; --surface2: #282828; --divider: #2A2A2A;
+    --text-secondary: #B3B3B3; --text-tertiary: #6A6A6A;
+    --green: #1DB954;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: var(--canvas);
+    color: #FFFFFF;
+    width: 393px;
+    margin: 0 auto;
+    padding: 24px 24px 32px;
+  }
+  .backlink { display: block; font-size: 12px; color: var(--text-tertiary); text-decoration: none; margin-bottom: 24px; }
+  .logo { width: 48px; height: 48px; border-radius: 12px; background: var(--green); margin-bottom: 24px; }
+  h1 { font-size: 24px; font-weight: 700; margin: 0 0 8px; }
+  .subtitle { font-size: 14px; font-weight: 400; color: var(--text-secondary); margin: 0 0 28px; }
+
+  .oauth-btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; height: 48px; border-radius: 500px; margin-bottom: 12px;
+    font-family: inherit; font-size: 14px; font-weight: 600; border: none;
+  }
+  .oauth-btn.filled { background: #FFFFFF; color: #121212; }
+  .oauth-btn.outline { background: transparent; color: #FFFFFF; border: 1px solid var(--text-secondary); }
+  .icon { font-size: 16px; }
+
+  .fine-print { font-size: 12px; color: var(--text-tertiary); margin-top: 20px; line-height: 1.5; }
+  .fine-print a { color: var(--text-secondary); }
+</style>
+</head>
+<body>
+  <a class="backlink" href="index.html">← Back to comparison</a>
+  <div class="logo"></div>
+  <h1>Create your account</h1>
+  <div class="subtitle">Sign up to save playlists and pick up where you left off.</div>
+
+  <button class="oauth-btn filled"><span class="icon">G</span> Continue with Google</button>
+  <button class="oauth-btn outline"><span class="icon"></span> Continue with Apple</button>
+  <button class="oauth-btn outline"><span class="icon">f</span> Continue with Facebook</button>
+  <button class="oauth-btn outline"><span class="icon">✉</span> Continue with Email</button>
+
+  <div class="fine-print">
+    By continuing, you agree to Spotify's <a href="#">Terms</a> and acknowledge you've read our
+    <a href="#">Privacy Policy</a>.
+  </div>
+</body>
+</html>

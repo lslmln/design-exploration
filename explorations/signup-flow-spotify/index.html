@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Sign-up flows → Spotify (comparison)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', Helvetica, Arial, sans-serif;
+    background: #e8e8e8;
+    padding: 40px 16px;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+  .meta {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #444;
+  }
+  .meta h1 { font-size: 16px; font-weight: 700; color: #111; margin: 0 0 10px; }
+  .meta a { color: #111; }
+  .meta ul { margin: 6px 0 0; padding-left: 18px; }
+  .meta .gap { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; }
+  .meta .gap strong { color: #111; }
+  .meta .font-note { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; color: #666; font-size: 13px; }
+  .meta .note { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; color: #666; font-size: 13px; }
+
+  .grid { display: flex; flex-wrap: wrap; gap: 24px; }
+  .tile { width: 220px; }
+  .tile > a { display: block; text-decoration: none; }
+  .thumb-wrap {
+    width: 220px; height: 320px; overflow: hidden; position: relative;
+    border-radius: 14px; background: #121212; box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  }
+  .thumb-wrap iframe {
+    width: 393px; height: 570px; border: 0;
+    position: absolute; top: 0; left: 0;
+    transform: scale(0.56); transform-origin: top left;
+    pointer-events: none;
+  }
+  .tile-label { margin-top: 10px; font-size: 13px; color: #333; font-weight: 700; }
+  .tile-sub { font-size: 12px; color: #888; margin-top: 2px; }
+  .tile:hover .thumb-wrap { outline: 2px solid #1DB954; outline-offset: 2px; }
+
+  .footnote { text-align: center; font-size: 12px; color: #999; margin-top: 32px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="meta">
+      <h1>Sign-up / account creation flows — restyled into Spotify's design system</h1>
+      <div>Target tokens: <code>design.md/ios-apps/music/spotify/DESIGN.md</code> — canvas, primary
+        pill CTA, and input-field specs pulled exactly from the file.</div>
+      <div>Device: iPhone 17, 393pt (default).</div>
+      <div>Source patterns (multi-brand comparison, all iOS-sourced via <code>search_flows(platform: "ios")</code>). Click a preview to open the full page.</div>
+      <ul>
+        <li><a href="https://mobbin.com/flows/21001ba9-0cb7-4eb2-9f4f-83b030d02029" target="_blank" rel="noopener">Klarna — "Creating an account"</a></li>
+        <li><a href="https://mobbin.com/flows/78a00926-ecaa-401f-ad9d-7a69ef449ba3" target="_blank" rel="noopener">Photoroom — "Creating an account" (social sign-up)</a></li>
+        <li><a href="https://mobbin.com/flows/07c45373-1c90-4fdb-9378-9e55c04eeaf0" target="_blank" rel="noopener">Woolworths — "Onboarding" (verify step)</a></li>
+      </ul>
+      <div class="gap">
+        <strong>Gap flagged:</strong> Spotify's own search-bar spec (white fill, 44pt, 6pt radius)
+        and primary pill CTA (green, black text, full pill) are genuine matches — Spotify's app
+        does have simple text-entry fields and a signature CTA button. But Spotify has no documented
+        "continue with Google/Apple/Facebook" OAuth button component (its own account creation is
+        handled by the OS-level Sign in with Apple / email, not a stack of third-party buttons), so
+        Photoroom's social buttons are improvised from the outline-pill and filled-pill patterns
+        rather than a real documented component. Woolworths' step progress bar is also invented —
+        Spotify's only real progress bar is the playback scrubber, repurposed here at thinner scale.
+      </div>
+      <div class="font-note">
+        <strong>Font substitution:</strong> Spotify Mix is proprietary and not bundled here — using
+        the file's own documented fallback stack (<code>-apple-system, BlinkMacSystemFont, 'SF Pro
+        Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif</code>) exactly as specified in
+        DESIGN.md, not a freehand substitute.
+      </div>
+      <div class="note">
+        This is the HTML companion to <code>explorations/swiftui/SpotifySignupComparison.swift</code>
+        — same three screens, same tokens, but actually renderable and verified here (headless
+        browser), unlike the SwiftUI file which can't be compiled or previewed in this environment.
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="tile">
+        <a href="klarna.html"><div class="thumb-wrap"><iframe src="klarna.html"></iframe></div></a>
+        <div class="tile-label">Klarna's account form → restyled</div>
+        <div class="tile-sub"><a href="https://mobbin.com/flows/21001ba9-0cb7-4eb2-9f4f-83b030d02029" target="_blank" rel="noopener">Source on Mobbin ↗</a></div>
+      </div>
+      <div class="tile">
+        <a href="photoroom.html"><div class="thumb-wrap"><iframe src="photoroom.html"></iframe></div></a>
+        <div class="tile-label">Photoroom's social sign-up → restyled</div>
+        <div class="tile-sub"><a href="https://mobbin.com/flows/78a00926-ecaa-401f-ad9d-7a69ef449ba3" target="_blank" rel="noopener">Source on Mobbin ↗</a></div>
+      </div>
+      <div class="tile">
+        <a href="woolworths.html"><div class="thumb-wrap"><iframe src="woolworths.html"></iframe></div></a>
+        <div class="tile-label">Woolworths' verify step → restyled</div>
+        <div class="tile-sub"><a href="https://mobbin.com/flows/07c45373-1c90-4fdb-9378-9e55c04eeaf0" target="_blank" rel="noopener">Source on Mobbin ↗</a></div>
+      </div>
+    </div>
+
+    <div class="footnote">
+      First-draft starting points for a designer to react to — not finished design decisions.
+    </div>
+  </div>
+</body>
+</html>
