@@ -82,9 +82,26 @@ same turn and let the person type the one they want (the tool's free-text option
    system" (routes into Step 1's no-matching-file handling). Don't hardcode brand names in this
    skill file itself; the reference set grows, so read the directory fresh each time rather than
    trusting a list written down here.
-3. **Which Figma file to write into** (if not already given). Ask for the file's URL or key if
-   none has been mentioned in this conversation — never assume or reuse a file from a previous,
-   unrelated task. This also carries the device-size detail: it sets the Figma frame's
+3. **Which Figma file to write into, and which page in it** (if not already given). Ask for the
+   file's URL or key if none has been mentioned in this conversation — never assume or reuse a file
+   from a previous, unrelated task. A Figma file can hold several pages, and a shared URL's
+   `?node-id=` parameter is what pins down *which* page or frame it points to — the file key alone
+   is not enough. Resolve the page explicitly, don't default to whichever page a metadata call
+   happens to list first (a "top-level pages" listing can come back partial or misleading — verify
+   page identity directly, e.g. by resolving the `node-id` from the URL and checking what it
+   actually is, rather than trusting a summary at face value):
+   - If the URL's `node-id` resolves to a page itself (its parent has no parent page, i.e. it *is*
+     one), that's the target page — build there.
+   - If it resolves to a frame/node *within* a page, build on that page, positioned near (but not
+     overlapping) the referenced node.
+   - If no `node-id` is given, or the file has multiple pages and it's unclear which one is meant,
+     list the real page names and ask — don't silently pick one (including "the first one returned
+     by a listing call"). Building on the wrong page means the person can't find the output without
+     being told to switch pages after the fact.
+   - Once resolved, when pointing the person to the result later, give a direct node-id link into
+     that page/section, not just the file URL — don't make them hunt for the right page.
+
+   This also carries the device-size detail: it sets the Figma frame's
    width/height, so guessing wrong means redoing layout math after the fact. Use real point widths,
    not vague labels:
    - iPhone 17 (default if the person has no preference) — 402×874
@@ -183,6 +200,17 @@ default behavior, not something that only happens when the person explicitly ask
 varied set (different source apps, not near-duplicates of the same app) and restyle each one — say
 what was excluded and why if you narrowed a larger result set down. Only restyle a single source
 when the request named one specific app, or when Mobbin genuinely only returned one usable match.
+
+**When the granularity is a flow (`search_flows`), "restyle it" means every screen in that flow,
+per app — not one representative screen picked out of it.** A flow's whole value is the multi-step
+journey; collapsing a 10-screen checkout flow down to just the order-summary screen throws away
+the reason flow granularity was chosen over screen granularity in the first place, and does it
+silently unless flagged. If the combined screen count across the chosen apps is large enough that
+building all of it is impractical (heavy Figma node count, rate limits, a long session), that's a
+real constraint — but it's the person's call to make, not a silent default: say the full count,
+propose a reduced scope (e.g. "the 3 most distinct screens per app" or "one app in full, others as
+a single comparison screen"), and get a yes before building fewer screens than the flow actually
+has. Never quietly narrow "the checkout flow" into "the checkout screen" without saying so.
 
 ## Step 4 — Match content to the target's real component vocabulary
 
