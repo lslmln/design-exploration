@@ -44,17 +44,24 @@ same turn and let the person type the one they want (the tool's free-text option
    format, is how a mismatch like "restyle this web flow as SwiftUI" happens — a real gap-flag case
    discovered in testing, not a hypothetical one. Locking platform in first prevents it structurally
    instead of relying on a warning after the fact.
-2. **What pattern to search for** (if not already given). Lead with established, common pattern
-   categories as clickable options — a whole flow (checkout, onboarding, sign-up, adding to cart —
-   these match the action tags Mobbin's own results already carry, like "Purchasing & Ordering" or
-   "Adding to Cart & Bag"), a single screen type (empty states, notification settings), or, web
-   only, a page section (pricing table). Whichever granularity, the sweet spot is pulling how
-   *several different brands* solve the same pattern and restyling all of them into one target so
-   they can be compared side by side — that's the default to lead with, not an opt-in. A single
-   named app's one specific screen (e.g. "Stripe's checkout screen") is still supported via free
-   text, but it's the narrower case: fetching one specific screen just to reskin it is a smaller ask
-   than the multi-brand comparison this tool is actually built for, so don't present it as the
-   default option. This choice doubles as Step 3's granularity signal.
+2. **What pattern to search for** (if not already given). This is **one question with concrete
+   pattern examples as its clickable options** — never an abstract meta-question about granularity
+   itself (never present "a whole flow" / "a single screen" / "a page section" as the options; those
+   are internal categories for *you* to reason with, not chip labels to show the person). Pick 3-4
+   real, established patterns for the chosen platform as the actual option text — checkout,
+   onboarding, sign-up, adding to cart, empty states, notification settings, or (web only) a page
+   section like a pricing table — whichever are most relevant to what's already been said, plus
+   "something else" for free text. These match the action tags Mobbin's own results already carry
+   (like "Purchasing & Ordering" or "Adding to Cart & Bag"). Whichever one is picked, the sweet spot
+   is pulling how *several different brands* solve that same pattern and restyling all of them into
+   one target so they can be compared side by side — that's the default to lead with, not an
+   opt-in, and it's true regardless of whether the pattern picked is flow-, screen-, or
+   section-shaped, so don't surface that shape distinction as a decision the person has to make.
+   **Never offer "one specific screen from one named app" as a clickable option** — it's the
+   narrower case (fetching one specific screen just to reskin it is a smaller ask than the
+   multi-brand comparison this tool is actually built for), reachable only if someone types it
+   themselves via free text, never suggested. Once you know the chosen pattern, its shape (flow vs.
+   screen vs. section) is Step 3's granularity signal — reasoned internally, never asked.
 
    **Optionally, also offer to narrow by app category**, using Mobbin's own real category taxonomy
    (as browsable on mobbin.com itself, under Categories) — AI, Business, Collaboration,
