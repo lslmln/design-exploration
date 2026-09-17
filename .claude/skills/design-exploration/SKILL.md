@@ -211,6 +211,26 @@ real constraint — but it's the person's call to make, not a silent default: sa
 propose a reduced scope (e.g. "the 3 most distinct screens per app" or "one app in full, others as
 a single comparison screen"), and get a yes before building fewer screens than the flow actually
 has. Never quietly narrow "the checkout flow" into "the checkout screen" without saying so.
+Choosing a smaller set of "main screens" is a legitimate, normal scope decision — it is not the
+problem the next rule is about.
+
+**Never build a screen you haven't actually looked at — that's the one thing this whole skill
+exists to prevent.** `search_flows` returns image URLs for every screen in a flow, but only renders
+a sample of them inline to keep the response size down — the rest exist in the returned data but
+are not automatically shown to you. Whatever set of screens you land on (the full flow or a
+deliberately reduced "main screens" subset per the rule above), every single one you build must be
+a screen whose actual rendered image you looked at first. Never fill in a step — a cart, an address
+picker, a confirmation screen, anything — from general knowledge of what that app or that kind of
+screen "usually" looks like just because it plausibly belongs in the sequence. If a step you want
+is one of the ones that wasn't rendered inline, go get it: re-query with a scoped `search_screens`
+call naming that specific step (e.g. "Amazon delivery address screen") — this reliably renders the
+image and, as a bonus, gives a precise per-screen `mobbin_url` instead of one shared flow link. If
+you still can't find a real screenshot for a step you wanted, drop that step — do not invent one to
+fill the gap. The entire point of sourcing from Mobbin instead of working from general knowledge is
+that the restyled output traces back to a real, established design — a screen you never looked at
+is indistinguishable, in the handoff, from one you did, which quietly defeats that purpose. Citing
+a `mobbin_url` next to a screen you didn't actually inspect is worse than citing nothing, because it
+manufactures false confidence in something that was, in fact, made up.
 
 ## Step 4 — Match content to the target's real component vocabulary
 
