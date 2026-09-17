@@ -20,7 +20,8 @@ Scoped deliberately narrow for now: **iOS apps only, Figma only.** No web patter
 SwiftUI output — just Mobbin's iOS app screens restyled straight into a Figma file.
 
 It asks you three questions before it starts:
-1. **Pattern** — a flow or screen, optionally narrowed by app category.
+1. **Pattern** — a flow or screen, always paired with an app-category question (pick a Mobbin
+   category to narrow by, or search broadly with no filter).
 2. **Target** — which of the 200 bundled native iOS app design systems to restyle into.
 3. **Figma file** — which file to write into, plus a device size.
 
