@@ -57,13 +57,16 @@ same turn and let the person type the one they want (the tool's free-text option
    suggested. Once you know the chosen pattern, its shape (flow vs. screen) is Step 3's granularity
    signal — reasoned internally, never asked.
 
-   **Optionally, also offer to narrow by app category**, using Mobbin's own real category taxonomy
-   (as browsable on mobbin.com itself, under Categories) — AI, Business, Collaboration,
-   Communication, CRM, Developer Tools, Education, Entertainment, Finance, Food & Drink, Graphics &
-   Design, Health & Fitness, Jobs & Recruitment, Lifestyle, Medical, Music & Audio, Maps &
-   Navigation, News, Photo & Video, Productivity, Real Estate, Reference, Shopping, Social
-   Networking, Sports, Travel & Transportation, Utilities — rather than an invented approximation,
-   alongside "search broadly, no category filter" as the default/first option. Be upfront about what
+   **Always also ask which app category to pull from**, in the same `AskUserQuestion` call as the
+   pattern question — this is not optional and not something to skip even when the pattern is
+   already fully specified. Use Mobbin's own real category taxonomy (as browsable on mobbin.com
+   itself, under Categories) — AI, Business, Collaboration, Communication, CRM, Developer Tools,
+   Education, Entertainment, Finance, Food & Drink, Graphics & Design, Health & Fitness, Jobs &
+   Recruitment, Lifestyle, Medical, Music & Audio, Maps & Navigation, News, Photo & Video,
+   Productivity, Real Estate, Reference, Shopping, Social Networking, Sports, Travel &
+   Transportation, Utilities — rather than an invented approximation, alongside "search broadly, no
+   category filter" as the default/first option. Only skip asking if the user's own message already
+   named a category or specific apps to pull from. Be upfront about what
    this actually does: this category list is real on Mobbin's own site, but the
    `search_flows`/`search_screens` MCP tools available here have **no category or industry filter
    parameter** — only a free-text `query`, a `platform`, and pagination. A category choice here gets
