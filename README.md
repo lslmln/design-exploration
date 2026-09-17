@@ -21,7 +21,7 @@ It asks you four questions before it starts:
 2. **Pattern** — a flow, a screen, or (web only) a page section, optionally narrowed by app
    category.
 3. **Target** — the design system to restyle into.
-4. **Output** — Figma, HTML, or (iOS) SwiftUI plus a device size.
+4. **Output** — Figma or HTML for web; Figma or SwiftUI for iOS, plus a device size either way.
 
 A couple of tips:
 - **Ask for a pattern or flow, not a single screen.** The search works best when the goal is
