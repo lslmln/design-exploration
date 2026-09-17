@@ -3,7 +3,7 @@
 //
 //  Restyled from Kraken's iOS notification settings screen:
 //  https://mobbin.com/screens/ebe41637-082d-41bc-b937-ede3ae62f488
-//  into Coinbase's design system (design-tokens/coinbase-DESIGN.md).
+//  into Coinbase's design system (design.md/coinbase-DESIGN.md).
 //
 //  IMPORTANT — this file has NOT been compiled or previewed. It was written by hand in a
 //  Claude Code sandbox with no Swift toolchain and no macOS available, so there is no way to
@@ -24,7 +24,7 @@
 
 import SwiftUI
 
-// MARK: - Coinbase design tokens (design-tokens/coinbase-DESIGN.md)
+// MARK: - Coinbase design tokens (design.md/coinbase-DESIGN.md)
 
 extension Color {
     init(hex: UInt32) {

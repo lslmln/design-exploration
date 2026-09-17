@@ -10,28 +10,24 @@ your target design system's real tokens, and see it restyled into your own color
 and components instantly — across several source apps at once, so you can visualize more options,
 faster.
 
-Runs through Claude Code with the Mobbin MCP server connected — no separate app, server, or API
-key.
-
 ## How to use it
 
-It's a Claude Code skill, not an app — clone this repo (or copy `.claude/skills/restyle-mobbin/`
-and `design-tokens/` into your own project) and it's available in any Claude Code session: CLI,
-desktop app, web, or IDE extension. No separate install, server, or API key.
+It's a Claude Code skill called `design-exploration`. Copy `.claude/skills/design-exploration/`
+and `design.md/` into your project (or clone this repo), then run it in any Claude Code
+session.
 
-Then just ask, in plain language:
-
-> "Find [some UI pattern] on Mobbin and restyle it into [a brand]'s style" — e.g. *"Search Mobbin
-> for onboarding flows and restyle them using Coinbase's design system"* or *"pull Stripe's
-> checkout and redo it in Apple's style, write it to Figma."*
-
-If your request doesn't say everything it needs, the skill asks — platform (web or iOS), pattern,
-target design system, output format — one step at a time instead of guessing.
+It asks you four questions before it starts:
+1. **Platform** — web or app (iOS)?
+2. **Pattern** — a flow, a screen, or (web only) a page section, optionally narrowed by app
+   category.
+3. **Target** — the design system to restyle into.
+4. **Output** — Figma, HTML, or (iOS) SwiftUI plus a device size.
 
 A couple of tips:
-- **Ask for a pattern, not a single screen.** "Checkout flows" pulls several products' takes on the
-  same problem to compare side by side; "the Stripe checkout screen" only pulls one.
-- **No design system of your own yet? Use one of the bundled ones.** `design-tokens/` has 28 real
-  website systems (Stripe, Linear, Airbnb, Apple...) and `design-tokens/ios-apps/` has 200 real
+- **Ask for a pattern or flow, not a single screen.** The search works best when the goal is
+  pulling a bunch of screens across several apps — not just one app, not just one screen — so
+  there's a whole set to restyle and compare.
+- **No design system of your own yet? Use one of the bundled ones.** `design.md/` has 28 real
+  website systems (Stripe, Linear, Airbnb, Apple...) and `design.md/ios-apps/` has 200 real
   native iOS app systems (Coinbase's actual app, not just its site) — pick whichever fits the
   platform you chose.

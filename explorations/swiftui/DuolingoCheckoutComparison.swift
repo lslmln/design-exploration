@@ -2,13 +2,13 @@
 //  DuolingoCheckoutComparison.swift
 //
 //  Three iOS checkout/cart flows restyled into Duolingo's design system, for side-by-side
-//  comparison — the multi-brand-by-default behavior of the restyle-mobbin skill:
+//  comparison — the multi-brand-by-default behavior of the design-exploration skill:
 //
 //   - Etsy's cart:        https://mobbin.com/flows/b91fe80b-ba7a-47ae-b394-011b48d23209
 //   - Under Armour's bag: https://mobbin.com/flows/eab13d90-ca43-4141-80ee-849aabe60726
 //   - IKEA's checkout:    https://mobbin.com/flows/dbc9c0e8-c87f-4b64-bb52-fe180f7c141c
 //
-//  Restyled using design-tokens/ios-apps/misc/duolingo/DESIGN.md (colors, type scale) and
+//  Restyled using design.md/ios-apps/misc/duolingo/DESIGN.md (colors, type scale) and
 //  reusing real components documented in the sibling DESIGN-swiftui.md — DuoPrimaryButton and
 //  AnswerTile are copied from that file's own author-written implementation, not reinvented here.
 //
@@ -31,7 +31,7 @@
 
 import SwiftUI
 
-// MARK: - Duolingo design tokens (design-tokens/ios-apps/misc/duolingo/DESIGN.md)
+// MARK: - Duolingo design tokens (design.md/ios-apps/misc/duolingo/DESIGN.md)
 
 extension Color {
     static let duoFeatherGreen     = Color(red: 0.345, green: 0.800, blue: 0.008) // #58CC02

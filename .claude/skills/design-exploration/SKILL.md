@@ -1,9 +1,9 @@
 ---
-name: restyle-mobbin
-description: Search Mobbin for a UI pattern (a flow, screen, or section) — by default across several different source brands doing the same pattern, for side-by-side comparison — and restyle all of it into a target design system's real tokens (the user's own, a named web brand, or a native iOS app), reading exact values from a design-tokens/ reference file, then writing the result directly into Figma (or a platform-matched code file — HTML or SwiftUI — if Figma isn't connected). Use whenever a designer wants inspiration from real products adapted into a specific design language, e.g. "find onboarding flows and restyle them in our system" or "pull how a few different apps do checkout and restyle them all in Airbnb's style."
+name: design-exploration
+description: Search Mobbin for a UI pattern (a flow, screen, or section) — by default across several different source brands doing the same pattern, for side-by-side comparison — and restyle all of it into a target design system's real tokens (the user's own, a named web brand, or a native iOS app), reading exact values from a design.md/ reference file, then writing the result directly into Figma (or a platform-matched code file — HTML or SwiftUI — if Figma isn't connected). Use whenever a designer wants inspiration from real products adapted into a specific design language, e.g. "find onboarding flows and restyle them in our system" or "pull how a few different apps do checkout and restyle them all in Airbnb's style."
 ---
 
-# Restyle Mobbin → design tokens → Figma
+# design-exploration — Mobbin → design tokens → Figma
 
 ## What this does, and what it doesn't
 
@@ -64,18 +64,18 @@ same turn and let the person type the one they want (the tool's free-text option
    than forcing the count, and say so rather than silently including an off-category result.
 3. **What to restyle it into** (if not already given). There are two separate pools, and which one
    to search depends on the platform from question 1:
-   - **Web** → `design-tokens/*.md` (flat files, one per brand, website-derived).
-   - **App (iOS)** → `design-tokens/ios-apps/<category>/<app>/DESIGN.md` — 200 native iOS app design
+   - **Web** → `design.md/*.md` (flat files, one per brand, website-derived).
+   - **App (iOS)** → `design.md/ios-apps/<category>/<app>/DESIGN.md` — 200 native iOS app design
      systems (Coinbase, Binance, Robinhood, Spotify, Airbnb, and 195 more, organized by category:
      finance, social, messaging, travel, music, fitness, productivity, dating, food, video, misc).
      These document the brand's *actual app*, not its website — check here first whenever platform
      is "app" and only fall back to the website file (with the mismatch caveat below) if the brand
-     genuinely isn't in this set. `design-tokens/ios-apps/ATTRIBUTION.md` credits the source.
+     genuinely isn't in this set. `design.md/ios-apps/ATTRIBUTION.md` credits the source.
    List real options as plain text if there are more than ~3, since the chip limit won't fit them —
    plus an option for "my own system" (routes into Step 1's no-matching-file handling). Don't
    hardcode brand names in this skill file itself; both reference sets grow, so read the directory
    fresh each time rather than trusting a list written down here. **If platform is "app" and the
-   requested brand only exists in the website pool** (not in `design-tokens/ios-apps/`), say so
+   requested brand only exists in the website pool** (not in `design.md/ios-apps/`), say so
    plainly before proceeding — that's still the mismatch case (website tokens applied to a mobile
    screen, not the brand's real app language), just narrower now that a real native-app pool exists
    for many brands.
@@ -118,7 +118,7 @@ surfacing it to the person rather than leaving it silent in the repo (see Step 5
 
 The user names a target either as "our/my system" (their own) or a specific brand ("Coinbase's
 style", "Apple's style") — or, per Step 0, picks one from a presented list. Resolve it to one file:
-`design-tokens/<brand>-DESIGN.md` for web, or `design-tokens/ios-apps/<category>/<app>/DESIGN.md`
+`design.md/<brand>-DESIGN.md` for web, or `design.md/ios-apps/<category>/<app>/DESIGN.md`
 for app — whichever pool matches the platform from Step 0.
 
 - If "our/my system" has no matching file in either pool, say so explicitly before proceeding — do
@@ -133,10 +133,10 @@ Read the whole file. Do not approximate — every value used downstream must tra
 specific line in the file. Target files come in two schemas; both demand the same rigor, just
 extracted from different places:
 
-- **YAML-tokenized files** (every `design-tokens/*.md` web file, plus a few hand-converted ones):
+- **YAML-tokenized files** (every `design.md/*.md` web file, plus a few hand-converted ones):
   values live in a `colors:`/`typography:`/`rounded:`/`spacing:`/`components:` front-matter block.
   Pull from those keys directly.
-- **Prose-only files** (every `design-tokens/ios-apps/` file, copied as-is from their source repo):
+- **Prose-only files** (every `design.md/ios-apps/` file, copied as-is from their source repo):
   no YAML block — values live in the prose and in markdown tables under numbered sections (Color
   Palette & Roles, Typography Rules' Hierarchy table, Component Stylings). Pull from the specific
   table row or bullet, the same way you'd pull from a YAML key — "the Hierarchy table's 'Portfolio
@@ -265,7 +265,7 @@ or `search_screens(platform: "web")` or `search_sections` is web-sourced; `searc
   (per Step 0). See `explorations/swiftui/CoinbaseNotificationSettingsView.swift` for the established
   format: a `Color` hex extension for exact token values, small reusable row/component views
   instead of one giant body, and a `#Preview` block at the bottom so it drops straight into Xcode's
-  preview canvas. If the target came from `design-tokens/ios-apps/`, its `DESIGN-swiftui.md`
+  preview canvas. If the target came from `design.md/ios-apps/`, its `DESIGN-swiftui.md`
   sibling file already has that brand's own `Color`/`Font` extensions and sample view patterns
   written out — match those conventions instead of inventing a parallel structure. **Important
   limitation**: a Claude Code sandbox has no Swift toolchain and no macOS, so this file cannot be
