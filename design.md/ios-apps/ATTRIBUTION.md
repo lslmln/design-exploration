@@ -3,7 +3,7 @@
 The `DESIGN.md` and `DESIGN-swiftui.md` files in this directory (organized by category/app) are
 copied from [Meliwat/awesome-ios-design-md](https://github.com/Meliwat/awesome-ios-design-md),
 used under the MIT License below. They are native iOS app design-system analyses — distinct from
-the website-derived files directly under `design-tokens/`.
+the website-derived files directly under `design.md/`.
 
 Only `DESIGN.md` (framework-neutral) and `DESIGN-swiftui.md` (SwiftUI-specific) were copied from
 each app's four available flavors — `DESIGN-expo.md` and `DESIGN-android.md` were left out since
