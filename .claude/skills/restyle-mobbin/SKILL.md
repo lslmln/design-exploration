@@ -239,9 +239,9 @@ or `search_screens(platform: "web")` or `search_sections` is web-sourced; `searc
   Each restyled screen should be a real, full-bleed HTML page at real width — inline CSS, no
   external build step, no illustrated chrome — that genuinely looks like the target's own site at
   that breakpoint when opened.
-  - **Single source**: one such page is the whole deliverable — save it under `previews/`.
-  - **Multi-brand comparison (the default)**: save a small folder under `previews/<name>/` — see
-    `previews/signup-flows-linear/` for the established structure: one real full-bleed page per
+  - **Single source**: one such page is the whole deliverable — save it under `explorations/`.
+  - **Multi-brand comparison (the default)**: save a small folder under `explorations/<name>/` — see
+    `explorations/signup-flows-linear/` for the established structure: one real full-bleed page per
     source app (`jira.html`, `perplexity.html`, ...), each with a small unobtrusive "← Back to
     comparison" link, plus an `index.html` contents page carrying the header block (Mobbin source
     citations, target token file, gap-flag notes) and a live thumbnail per page that links to it.
@@ -257,10 +257,12 @@ or `search_screens(platform: "web")` or `search_sections` is web-sourced; `searc
   assume it's correct. Once it's verified,
   **surface it to the person directly** (open it as a rendered preview, or send the file) rather
   than leaving it sitting silently in the repo — generating the file isn't the finish line, them
-  actually seeing it is.
-- **Mobile-sourced (iOS)**: a single SwiftUI view file — saved under `previews/swiftui/` for a
+  actually seeing it is. Tell them the exact path to the `index.html` (or the single page, for a
+  single-source result) and that opening it in any browser — no server, no build step — is all it
+  takes to click through it themselves.
+- **Mobile-sourced (iOS)**: a single SwiftUI view file — saved under `explorations/swiftui/` for a
   standalone file, or at the path the person specified if they're targeting an existing iOS repo
-  (per Step 0). See `previews/swiftui/CoinbaseNotificationSettingsView.swift` for the established
+  (per Step 0). See `explorations/swiftui/CoinbaseNotificationSettingsView.swift` for the established
   format: a `Color` hex extension for exact token values, small reusable row/component views
   instead of one giant body, and a `#Preview` block at the bottom so it drops straight into Xcode's
   preview canvas. If the target came from `design-tokens/ios-apps/`, its `DESIGN-swiftui.md`
@@ -268,9 +270,13 @@ or `search_screens(platform: "web")` or `search_sections` is web-sourced; `searc
   written out — match those conventions instead of inventing a parallel structure. **Important
   limitation**: a Claude Code sandbox has no Swift toolchain and no macOS, so this file cannot be
   compiled, previewed, or verified from within the session — unlike the HTML path, this one ships
-  unverified. Say so explicitly in the handoff, send them the file directly, and tell them to open
-  it in Xcode (or paste it into a Swift Playground) to confirm it actually compiles before trusting
-  it. When the target's typography needs a licensed/substitute font, default the SwiftUI code to
+  unverified. Say so explicitly in the handoff, send them the file directly, and walk them through
+  opening it: in Xcode, either open the file directly (it doesn't need to belong to a project to
+  see the `#Preview` canvas — File > Open, select the `.swift` file, then Editor > Canvas, or
+  Option+Cmd+Return, to render it), or drag it into an existing project's target if they want it
+  there permanently. Confirming it actually compiles is the one thing only Xcode itself can do —
+  point them there before they trust the result. When the target's typography needs a
+  licensed/substitute font, default the SwiftUI code to
   `.system(...)` for guaranteed compilability, and note in the handoff that bundling the real
   substitute font (adding the file to the Xcode target + `Info.plist`) is a manual step the person
   still needs to do for pixel-exact type. Where the target's token schema improvised a component
