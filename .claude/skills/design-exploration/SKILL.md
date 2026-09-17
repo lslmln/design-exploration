@@ -245,8 +245,16 @@ than what was asked for, not a substitute for it.
 
 ## Handoff notes (always include)
 
-- Which target file(s) were used, and the Mobbin source links (cite `mobbin_url` for every
-  screen used).
+- **A per-screen link table pairing the restyled output with its source** — this is the main
+  point of the handoff, not an afterthought. For every restyled screen, give the Figma link (a
+  direct node-id link into the specific frame, per Step 0's page-resolution rule — not just the
+  file URL) *and* the Mobbin source it was built from (`mobbin_url`, the same link Mobbin gives for
+  a screen or a flow) side by side, so the person can open both and compare without hunting for
+  either one. A markdown table works well: columns for screen name, Figma link, Mobbin link. If a
+  screen's Figma link can't be produced (e.g. it wasn't actually built, see Step 3's flow-scoping
+  rule), don't list a Figma link for it — that gap is exactly what the table should make visible,
+  not paper over.
+- Which target file(s) were used.
 - Any token that was approximated rather than found exactly, and why.
 - Any component that had no match in the target file and was improvised.
 - One-line reminder that this is a first-draft starting point, not a finished design decision.
