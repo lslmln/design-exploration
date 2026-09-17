@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Search results — restyled into Spotify</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --canvas: #121212; --surface1: #181818; --surface2: #282828;
+    --divider: #2A2A2A; --text-primary: #FFFFFF; --text-secondary: #B3B3B3;
+    --text-tertiary: #6A6A6A; --green: #1DB954; --green-pressed: #169C46;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', Helvetica, Arial, sans-serif;
+    background: var(--canvas);
+    color: var(--text-primary);
+    width: 375px;
+    margin: 0 auto;
+    padding: 16px 16px 32px;
+  }
+  .backlink { display: block; font-size: 12px; color: var(--text-tertiary); text-decoration: none; margin-bottom: 16px; }
+
+  .search-bar {
+    display: flex; align-items: center; gap: 8px;
+    background: #FFFFFF; height: 44px; border-radius: 6px;
+    padding: 0 12px; margin-bottom: 12px;
+  }
+  .search-icon { color: var(--canvas); font-size: 16px; }
+  .search-text { color: var(--canvas); font-size: 16px; font-weight: 400; }
+
+  .chip-row { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; }
+  .chip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface2); color: #FFFFFF;
+    padding: 8px 16px; border-radius: 500px;
+    font-size: 14px; font-weight: 600; white-space: nowrap;
+  }
+  .chip.selected { background: #FFFFFF; color: #000000; }
+
+  .section-title { font-size: 22px; font-weight: 700; margin: 0 0 16px; }
+
+  .row { display: flex; align-items: center; height: 56px; gap: 12px; }
+  .row + .row { border-top: 1px solid var(--divider); }
+  .row-thumb { width: 44px; height: 44px; border-radius: 6px; background: var(--surface2); flex-shrink: 0; }
+  .row-meta { flex: 1; min-width: 0; }
+  .row-title { font-size: 16px; font-weight: 600; color: #FFFFFF; }
+  .row-sub { font-size: 13px; font-weight: 400; color: var(--text-secondary); margin-top: 2px; }
+  .row-trail { font-size: 14px; font-weight: 600; color: var(--green); text-align: right; }
+</style>
+</head>
+<body>
+  <a class="backlink" href="index.html">← Back to comparison</a>
+
+  <div class="search-bar">
+    <span class="search-icon">⌕</span>
+    <span class="search-text">Where to?</span>
+  </div>
+
+  <div class="chip-row">
+    <div class="chip selected">▼ Filters</div>
+    <div class="chip">4.5+ Rated</div>
+    <div class="chip">⚡ 30 mins</div>
+    <div class="chip">GOTYOU</div>
+  </div>
+
+  <div class="section-title">Nearby options</div>
+
+  <div class="row">
+    <div class="row-thumb"></div>
+    <div class="row-meta">
+      <div class="row-title">Careem Go</div>
+      <div class="row-sub">4.8 ★ · 3 min away</div>
+    </div>
+    <div class="row-trail">AED 18</div>
+  </div>
+  <div class="row">
+    <div class="row-thumb"></div>
+    <div class="row-meta">
+      <div class="row-title">Careem Business</div>
+      <div class="row-sub">4.9 ★ · 5 min away</div>
+    </div>
+    <div class="row-trail">AED 34</div>
+  </div>
+  <div class="row">
+    <div class="row-thumb"></div>
+    <div class="row-meta">
+      <div class="row-title">Careem Bike</div>
+      <div class="row-sub">4.6 ★ · 1 min away</div>
+    </div>
+    <div class="row-trail">AED 6</div>
+  </div>
+  <div class="row">
+    <div class="row-thumb"></div>
+    <div class="row-meta">
+      <div class="row-title">Careem Ice</div>
+      <div class="row-sub">4.7 ★ · 4 min away</div>
+    </div>
+    <div class="row-trail">AED 22</div>
+  </div>
+</body>
+</html>
