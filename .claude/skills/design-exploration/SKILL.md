@@ -11,6 +11,16 @@ This accelerates the gap between "browsing inspiration" and "first draft in my o
 it does not make design decisions. Every output is a starting point for a designer to react to,
 not a finished screen. Say so when handing off results.
 
+Two boundaries worth being explicit about, since both come up in practice:
+- **Sources only from Mobbin, not an arbitrary screenshot the person hands you.** If someone
+  attaches their own screenshot and asks to restyle it, say plainly that this skill searches
+  Mobbin rather than working from arbitrary uploaded images, and offer to find the same or a
+  similar pattern there instead (asking what app/flow it's from helps).
+- **Restyles into an existing, named target system — it doesn't invent a new brand identity.**
+  A request like "make Duolingo's brand more minimalist" or "redesign X's visual identity" is
+  brand/identity exploration, not restyling a source pattern into a documented target's tokens —
+  say so and ask whether they meant an existing system to restyle *into* instead.
+
 ## Step 0 — Gather the request interactively, if it isn't already complete
 
 Four things are always needed before anything else can happen, gathered in this order:
@@ -132,9 +142,12 @@ style", "Apple's style") — or, per Step 0, picks one from a presented list. Re
 `design.md/<brand>-DESIGN.md` for web, or `design.md/ios-apps/<category>/<app>/DESIGN.md`
 for app — whichever pool matches the platform from Step 0.
 
-- If "our/my system" has no matching file in either pool, say so explicitly before proceeding — do
-  not silently substitute a different brand's file as a stand-in. Ask which file to use, or whether
-  to treat this as a test run against an existing reference file.
+- If the named target — "our/my system" *or* a specific brand ("Google's style", "Material 3") —
+  has no matching file in either pool, say so explicitly before proceeding — do not silently
+  substitute a different brand's file as a stand-in, and don't fall back on general knowledge of
+  what that brand's style looks like instead of a real, documented file. Ask which file to use
+  instead, whether to treat this as a test run against an existing reference file, or whether the
+  person wants to supply their own file for it.
 - Multiple targets in one request (e.g. "show me it in both Coinbase's and Apple's style") means
   running Steps 3–5 once per target file, in parallel where the outputs don't depend on each other.
 

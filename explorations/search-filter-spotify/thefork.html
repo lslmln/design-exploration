@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Restaurant search — restyled into Spotify</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --canvas: #121212; --surface1: #181818; --surface2: #282828;
+    --divider: #2A2A2A; --text-primary: #FFFFFF; --text-secondary: #B3B3B3;
+    --text-tertiary: #6A6A6A; --green: #1DB954; --green-pressed: #169C46;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', Helvetica, Arial, sans-serif;
+    background: var(--canvas);
+    color: var(--text-primary);
+    width: 375px;
+    margin: 0 auto;
+    padding: 16px 16px 32px;
+  }
+  .backlink { display: block; font-size: 12px; color: var(--text-tertiary); text-decoration: none; margin-bottom: 16px; }
+
+  .search-bar {
+    display: flex; align-items: center; gap: 8px;
+    background: #FFFFFF; height: 44px; border-radius: 6px;
+    padding: 0 12px; margin-bottom: 12px;
+  }
+  .search-icon { color: var(--canvas); font-size: 16px; }
+  .search-text { color: var(--canvas); font-size: 16px; font-weight: 400; }
+
+  .chip-row { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; }
+  .chip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface2); color: #FFFFFF;
+    padding: 8px 16px; border-radius: 500px;
+    font-size: 14px; font-weight: 600; white-space: nowrap;
+  }
+  .chip.selected { background: #FFFFFF; color: #000000; }
+
+  .section-title { font-size: 22px; font-weight: 700; margin: 0 0 16px; }
+
+  .card { margin-bottom: 16px; }
+  .card-art { width: 100%; height: 140px; border-radius: 6px; background: var(--surface2); margin-bottom: 8px; position: relative; }
+  .discount { position: absolute; bottom: 8px; left: 8px; background: var(--green); color: #000000;
+    font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 500px; }
+  .card-title { font-size: 15px; font-weight: 600; color: #FFFFFF; }
+  .card-sub { font-size: 13px; font-weight: 400; color: var(--text-secondary); margin-top: 2px; }
+  .card-slots { display: flex; gap: 8px; margin-top: 8px; overflow-x: auto; }
+  .slot { background: var(--surface2); color: var(--text-secondary); font-size: 12px; font-weight: 600;
+    padding: 6px 10px; border-radius: 8px; white-space: nowrap; }
+</style>
+</head>
+<body>
+  <a class="backlink" href="index.html">← Back to comparison</a>
+
+  <div class="search-bar">
+    <span class="search-icon">⌕</span>
+    <span class="search-text">Offers</span>
+  </div>
+
+  <div class="chip-row">
+    <div class="chip selected">▼ 1</div>
+    <div class="chip">Offers</div>
+    <div class="chip">Best rated</div>
+    <div class="chip">Cuisine</div>
+  </div>
+
+  <div class="section-title">Nearby offers</div>
+
+  <div class="card">
+    <div class="card-art"><span class="discount">-40%</span></div>
+    <div class="card-title">Eat Day</div>
+    <div class="card-sub">73 Rue Saint-Martin · Japanese · 8.8</div>
+    <div class="card-slots">
+      <div class="slot">12:30 PM</div>
+      <div class="slot">1:00 PM</div>
+      <div class="slot">1:15 PM</div>
+      <div class="slot">1:30 PM</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-art"><span class="discount">-20%</span></div>
+    <div class="card-title">La Petite Table</div>
+    <div class="card-sub">12 Rue de Rivoli · French · 9.1</div>
+    <div class="card-slots">
+      <div class="slot">7:00 PM</div>
+      <div class="slot">7:30 PM</div>
+      <div class="slot">8:00 PM</div>
+    </div>
+  </div>
+</body>
+</html>
