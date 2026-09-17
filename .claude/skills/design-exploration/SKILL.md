@@ -87,12 +87,23 @@ same turn and let the person type the one they want (the tool's free-text option
    - **App (iOS)** → **Figma** (same as above) or **SwiftUI code** (ask whether it should be a
      standalone file or land in an existing iOS repo/path — see Step 5 for what this can and can't
      do; "Simulator" itself is never an option here, since this skill can't open or produce it).
-     **Also ask which device size to design for** (e.g. iPhone 17, iPhone SE, iPad, or custom
-     dimensions) — iOS-only, and last, since it's really a detail of *this* output rather than a
-     new top-level question: it sets the Figma frame width/height or the SwiftUI `#Preview`'s
-     `.previewDevice(...)`, and guessing wrong means redoing layout math after the fact. Default to
-     a current standard size (iPhone 17, ~393×852) if the person has no preference, rather than
-     blocking on an answer to something this replaceable.
+     **Also ask which device size to design for** — iOS-only, and last, since it's really a detail
+     of *this* output rather than a new top-level question: it sets the Figma frame width/height,
+     the SwiftUI `#Preview`'s `.previewDevice(...)`, and the companion HTML's width (Step 5).
+     Guessing wrong means redoing layout math after the fact, so use real point widths, not vague
+     labels:
+     - iPhone 17 (default if the person has no preference) — 393×852
+     - iPhone 17 Pro Max — 440×956
+     - iPhone SE (3rd gen, the current smallest iPhone) — 375×667
+     - iPad — **flag before proceeding, don't just build it**: Mobbin's iOS screens are phone-shaped
+       (roughly 9:19.5), not tablet-shaped, so there's no real source layout to restyle *for* an
+       iPad — only a phone screenshot scaled or centered onto a much wider canvas, which is a
+       fundamentally different design problem (real iPad layouts add columns/sidebars, they don't
+       just stretch). Say this plainly and offer the actual choice: center the phone-width content
+       on an iPad-sized canvas (honestly labeled as unstretched phone content, not a tablet
+       redesign), or pick a phone size instead. Only proceed past this once the person has chosen,
+       don't default silently either way.
+     - Custom dimensions — take the person's exact numbers as given.
 
 If someone explicitly insists on a cross-platform combination anyway (e.g. genuinely wants a web
 flow reimagined for iOS, on purpose) — honor it, since forcing platform-appropriate options is about
@@ -286,15 +297,19 @@ or `search_screens(platform: "web")` or `search_sections` is web-sourced; `searc
   better than re-improvising.
 
   **Also produce a real HTML preview, rendered at the exact device width chosen in Step 0** (e.g.
-  393px for iPhone 17) — this is the only way anyone, including you, can actually *see* the result
-  before opening Xcode, since the SwiftUI file itself is unverified and Simulator only runs on the
-  person's own Mac. Same principle as the web case: **no illustrated phone bezel, no notch graphic
-  drawn in CSS** — just the real content at the real device width, unstretched. Mobbin's source
-  screens are already phone-shaped at that same scale, so this maps directly rather than needing an
-  invented frame. Render it with a headless browser to verify before handing it off, exactly like
-  the web HTML path. For a multi-brand comparison, use the same folder structure as the web case
-  (an `index.html` with live iframe thumbnails linking to one real phone-width page per source app)
-  — the architecture doesn't change, only the page width does.
+  393px for iPhone 17, 375px for iPhone SE — see Step 0 question 4 for the full width table) — this
+  is the only way anyone, including you, can actually *see* the result before opening Xcode, since
+  the SwiftUI file itself is unverified and Simulator only runs on the person's own Mac. Same
+  principle as the web case: **no illustrated phone bezel, no notch graphic drawn in CSS** — just
+  the real content at the real device width, unstretched. Mobbin's source screens are already
+  phone-shaped at that same scale, so this maps directly rather than needing an invented frame.
+  Render it with a headless browser to verify before handing it off, exactly like the web HTML
+  path. For a multi-brand comparison, use the same folder structure as the web case (an
+  `index.html` with live iframe thumbnails linking to one real phone-width page per source app) —
+  the architecture doesn't change, only the page width does. **If iPad was chosen** (per Step 0's
+  flag), the content stays phone-width and is centered on the wider canvas exactly as agreed — never
+  silently stretch it to fill the extra space, that would fabricate a tablet layout that was never
+  actually designed.
 
 ## Handoff notes (always include)
 
