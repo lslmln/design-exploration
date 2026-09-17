@@ -201,25 +201,27 @@ varied set (different source apps, not near-duplicates of the same app) and rest
 what was excluded and why if you narrowed a larger result set down. Only restyle a single source
 when the request named one specific app, or when Mobbin genuinely only returned one usable match.
 
-**When the granularity is a flow (`search_flows`), "restyle it" means every screen in that flow,
-per app — not one representative screen picked out of it.** A flow's whole value is the multi-step
-journey; collapsing a 10-screen checkout flow down to just the order-summary screen throws away
-the reason flow granularity was chosen over screen granularity in the first place, and does it
-silently unless flagged. If the combined screen count across the chosen apps is large enough that
-building all of it is impractical (heavy Figma node count, rate limits, a long session), that's a
-real constraint — but it's the person's call to make, not a silent default: say the full count,
-propose a reduced scope (e.g. "the 3 most distinct screens per app" or "one app in full, others as
-a single comparison screen"), and get a yes before building fewer screens than the flow actually
-has. Never quietly narrow "the checkout flow" into "the checkout screen" without saying so.
-Choosing a smaller set of "main screens" is a legitimate, normal scope decision — it is not the
-problem the next rule is about.
+**When the granularity is a flow (`search_flows`), default to a tight set of key screens per app —
+not the full flow, and not a single screen either.** A full flow can run 10-17+ screens; reproducing
+every one of them is more than a designer needs to evaluate a restyle at a glance, and it burns
+Figma writes on near-duplicate or low-signal steps (an intermediate form field, a second address
+line). The default is a small number per app — **aim for 3-5** — chosen to cover the flow's actual
+shape: normally an entry/starting screen, one or two core decision or input steps, and the
+completion/confirmation screen. Skip steps that don't add a materially different UI pattern to look
+at. Say which screens were picked and, briefly, why (e.g. "cart, payment method, and confirmation —
+skipping the intermediate address-form screens since they're mostly text fields, not a distinct
+pattern"). If the person explicitly asks for the full flow, or for every screen, honor that instead
+— this tight-by-default behavior only applies absent that ask. Either way, once you land on a
+count, that's what you build — no separate negotiation step is needed for a *normal-sized* tight
+set; only flag it explicitly and ask first if even the tight set is unusually large across the
+chosen apps (e.g. more apps than usual, or a flow whose key steps alone still run long).
 
 **Never build a screen you haven't actually looked at — that's the one thing this whole skill
 exists to prevent.** `search_flows` returns image URLs for every screen in a flow, but only renders
 a sample of them inline to keep the response size down — the rest exist in the returned data but
-are not automatically shown to you. Whatever set of screens you land on (the full flow or a
-deliberately reduced "main screens" subset per the rule above), every single one you build must be
-a screen whose actual rendered image you looked at first. Never fill in a step — a cart, an address
+are not automatically shown to you. Whatever set of screens you land on (the default tight
+key-screen set, or the full flow if that was explicitly requested), every single one you build must
+be a screen whose actual rendered image you looked at first. Never fill in a step — a cart, an address
 picker, a confirmation screen, anything — from general knowledge of what that app or that kind of
 screen "usually" looks like just because it plausibly belongs in the sequence. If a step you want
 is one of the ones that wasn't rendered inline, go get it: re-query with a scoped `search_screens`
